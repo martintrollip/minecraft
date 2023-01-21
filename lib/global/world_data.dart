@@ -1,0 +1,26 @@
+import 'package:minecraft/global/player_data.dart';
+import 'package:minecraft/resources/blocks.dart';
+import 'package:minecraft/utils/constant.dart';
+import 'package:minecraft/utils/game_methods.dart';
+
+class WorldData {
+  WorldData({required this.seed});
+
+  final int seed;
+
+  var playerData = PlayerData();
+
+  var leftWorldChunks = List.generate(chunkHeight, (index) => <Blocks?>[]);
+
+  var rightWorldChunks = List.generate(chunkHeight, (index) => <Blocks?>[]);
+
+  List<int> get chunksToRender {
+    return [
+      GameMethods.instance.playerChunk - 1,
+      GameMethods.instance.playerChunk,
+      GameMethods.instance.playerChunk + 1,
+    ];
+  }
+
+  List<int> visibleChunks = [];
+}

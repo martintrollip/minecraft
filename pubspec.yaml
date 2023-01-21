@@ -1,0 +1,43 @@
+name: minecraft
+description: A new Flutter project.
+version: 1.0.0+1
+
+publish_to: 'none' 
+
+environment:
+  sdk: '>=2.18.6 <3.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  fast_noise: ^1.0.1
+  flame: ^1.6.0
+  get: ^4.6.5
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/controller/
+    - assets/fonts/
+    - assets/images/gui/
+    - assets/images/inventory/
+    - assets/images/launcher/
+    - assets/images/parallax/evening/
+    - assets/images/parallax/morning/
+    - assets/images/parallax/night/
+    - assets/images/sprite_sheets/blocks/
+    - assets/images/sprite_sheets/item/
+    - assets/images/sprite_sheets/mobs/
+    - assets/images/sprite_sheets/player/
+    - assets/images/sprite_sheets/
+  fonts:
+    - family: MinecraftFont
+      fonts:
+        - asset: assets/fonts/minecraft_font.ttf
