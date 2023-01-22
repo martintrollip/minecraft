@@ -65,6 +65,7 @@ class MainGame extends FlameGame {
         } else {
           // chunk already created
         }
+
         renderChunk(index);
         worldData.visibleChunks.add(index);
       }

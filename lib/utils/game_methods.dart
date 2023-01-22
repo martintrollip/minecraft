@@ -61,12 +61,16 @@ class GameMethods {
       GlobalGameReference.instance.game.worldData.rightWorldChunks
           .asMap()
           .forEach((yIndex, List<Blocks?> row) {
+        print(
+            'Martin! R $index length=${row.length} start=${(getStartIndex(index))} end=${(getEndIndex(index))}');
         chunk.add(row.sublist(getStartIndex(index), getEndIndex(index)));
       });
     } else {
       GlobalGameReference.instance.game.worldData.leftWorldChunks
           .asMap()
           .forEach((yIndex, List<Blocks?> row) {
+        print(
+            'Martin! L $index length=${row.length} start=${(getStartIndex(index))} end=${(getEndIndex(index))}');
         chunk.add(row.sublist(getStartIndex(index), getEndIndex(index)));
       });
     }
