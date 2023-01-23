@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:minecraft/resources/biomes.dart';
 import 'package:minecraft/resources/blocks.dart';
+import 'package:minecraft/resources/structures.dart';
 import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
@@ -44,6 +45,8 @@ class ChunkGenerationMethods {
     chunk = _generatePrimarySoil(yValues, chunk, biome.primarySoil);
     chunk = _generateSecondarySoil(yValues, chunk, biome.secondarySoil);
     chunk = _generateStone(chunk, Blocks.stone, seed);
+
+    chunk = _addStructures(biome, chunk, yValues, seed + chunkIndex);
 
     //TODO for debugging
     if (chunkIndex == -2) {
@@ -101,6 +104,48 @@ class ChunkGenerationMethods {
     int x2 = x1 + Random(seed).nextInt(chunkWidth ~/ 2);
 
     chunk[GameMethods.instance.maxSecondarySoilDepth].fillRange(x1, x2, block);
+
+    return chunk;
+  }
+
+  List<List<Blocks?>> _addStructures(
+    BiomeData biome,
+    List<List<Blocks?>> chunk,
+    List<int> yValues,
+    int seed,
+  ) {
+    biome.structures.asMap().forEach((key, structure) {
+      int count = Random(seed).nextInt(structure.maxOccurrences + 1);
+      for (var i = 0; i < count; i++) {
+        _addStructure(chunk, yValues, seed + i + key, structure);
+      }
+    });
+    return chunk;
+  }
+
+  List<List<Blocks?>> _addStructure(
+    List<List<Blocks?>> chunk,
+    List<int> yValues,
+    int seed,
+    Structure tree,
+  ) {
+    final xStart = Random(seed).nextInt(chunkWidth - tree.maxWidth);
+    final xStump = xStart + (tree.maxWidth ~/ 2);
+    final yStart = yValues[xStump] - 1;
+    final height = tree.structure.length;
+    final structure = tree.structure.reversed.toList();
+
+    for (int rowIndex = 0; rowIndex < height; rowIndex++) {
+      final row = structure[rowIndex];
+
+      row.asMap().forEach((index, blocks) {
+        final yCurrent = yStart - rowIndex;
+        final xCurrent = xStart + index;
+        if (chunk[yCurrent][xCurrent] == null) {
+          chunk[yCurrent][xCurrent] = blocks;
+        }
+      });
+    }
 
     return chunk;
   }
