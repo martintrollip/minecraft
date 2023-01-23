@@ -105,4 +105,23 @@ class GameMethods {
   int get playerChunk {
     return playerX >= 0 ? playerX ~/ chunkWidth : playerX ~/ chunkWidth - 1;
   }
+
+  List<List<int>> processNoise(List<List<double>> raw) {
+    final processed = List.generate(
+      raw.length,
+      (index) => List.generate(raw[0].length, ((index) => 255)),
+    );
+
+    final w = raw.length;
+    final h = raw[0].length;
+
+    for (var x = 0; x < w; x++) {
+      for (var y = 0; y < h; y++) {
+        var value = (0x80 + 0x80 * raw[x][y]).floor();
+        processed[x][y] = value;
+      }
+    }
+
+    return processed;
+  }
 }

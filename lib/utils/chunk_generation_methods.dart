@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:fast_noise/fast_noise.dart';
+import 'package:flame/components.dart';
 import 'package:minecraft/resources/biomes.dart';
 import 'package:minecraft/resources/blocks.dart';
+import 'package:minecraft/resources/ores.dart';
 import 'package:minecraft/resources/structures.dart';
 import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
@@ -45,8 +47,11 @@ class ChunkGenerationMethods {
     chunk = _generatePrimarySoil(yValues, chunk, biome.primarySoil);
     chunk = _generateSecondarySoil(yValues, chunk, biome.secondarySoil);
     chunk = _generateStone(chunk, Blocks.stone, seed);
-
     chunk = _addStructures(biome, chunk, yValues, seed + chunkIndex);
+    chunk = _addOre(chunk, Ore.iron(), seed + 101);
+    chunk = _addOre(chunk, Ore.coal(), seed + 111);
+    chunk = _addOre(chunk, Ore.gold(), seed + 121);
+    chunk = _addOre(chunk, Ore.diamond(), seed + 131);
 
     //TODO for debugging
     if (chunkIndex == -2) {
@@ -154,5 +159,26 @@ class ChunkGenerationMethods {
     return noise
         .map((e) => (e[0] * 10).toInt().abs() + GameMethods.instance.freeArea)
         .toList();
+  }
+
+  List<List<Blocks?>> _addOre(List<List<Blocks?>> chunk, Ore ore, int seed) {
+    var raw = noise2(
+      chunkWidth,
+      chunkHeight,
+      noiseType: NoiseType.Perlin,
+      frequency: 0.1,
+      seed: seed,
+    );
+
+    var processed = GameMethods.instance.processNoise(raw);
+    processed.asMap().forEach((rowIndex, row) {
+      row.asMap().forEach((index, value) {
+        if (value < ore.rarity && chunk[index][rowIndex] == Blocks.stone) {
+          chunk[index][rowIndex] = ore.block;
+        }
+      });
+    });
+
+    return chunk;
   }
 }
