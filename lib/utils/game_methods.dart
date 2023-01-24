@@ -74,7 +74,16 @@ class GameMethods {
     return chunk;
   }
 
-  //TODO make it work with negative index
+  // Adjust for framerate by using dt
+  double getGravity(double dt) {
+    return 3 * GameMethods.instance.blockSize.y * dt;
+  }
+
+  // Adjust for framerate by using dt
+  double getSpeed(double dt) {
+    return 3 * GameMethods.instance.blockSize.x * dt;
+  }
+
   int getStartIndex(int chunkIndex) {
     return chunkIndex >= 0
         ? chunkIndex * chunkWidth
