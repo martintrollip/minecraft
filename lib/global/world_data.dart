@@ -19,10 +19,10 @@ class WorldData {
       GameMethods.instance.playerChunk,
       GameMethods.instance.playerChunk + 1,
       GameMethods.instance.playerChunk - 1,
-      GameMethods.instance.playerChunk + 2,
-      GameMethods.instance.playerChunk - 2,
-      GameMethods.instance.playerChunk - 3,
-      GameMethods.instance.playerChunk + 3,
+      // GameMethods.instance.playerChunk + 2,
+      // GameMethods.instance.playerChunk - 2,
+      // GameMethods.instance.playerChunk - 3,
+      // GameMethods.instance.playerChunk + 3,
     ];
   }
 

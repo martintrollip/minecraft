@@ -10,9 +10,10 @@ import 'package:minecraft/utils/chunk_generation_methods.dart';
 import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-class MainGame extends FlameGame {
-  MainGame({required this.worldData}) {
+class MainGame extends FlameGame with HasCollisionDetection {
+  MainGame({required this.worldData, bool debug = false}) {
     globalGameReference.game = this;
+    debugMode = debug;
   }
 
   GlobalGameReference globalGameReference = Get.put(GlobalGameReference());
@@ -28,6 +29,10 @@ class MainGame extends FlameGame {
     camera.followComponent(playerComponent);
 
     add(playerComponent);
+
+    if (debugMode) {
+      add(FpsTextComponent());
+    }
   }
 
   void renderChunk(int chunkIndex) {

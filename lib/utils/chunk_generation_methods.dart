@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:fast_noise/fast_noise.dart';
-import 'package:flame/components.dart';
 import 'package:minecraft/resources/biomes.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/ores.dart';
@@ -48,27 +47,10 @@ class ChunkGenerationMethods {
     chunk = _generateSecondarySoil(yValues, chunk, biome.secondarySoil);
     chunk = _generateStone(chunk, Blocks.stone, seed);
     chunk = _addStructures(biome, chunk, yValues, seed + chunkIndex);
-    chunk = _addOre(chunk, Ore.iron(), seed + 101);
-    chunk = _addOre(chunk, Ore.coal(), seed + 111);
-    chunk = _addOre(chunk, Ore.gold(), seed + 121);
-    chunk = _addOre(chunk, Ore.diamond(), seed + 131);
-
-    //TODO for debugging
-    if (chunkIndex == -2) {
-      chunk[0][0] = Blocks.grass;
-    }
-    if (chunkIndex == -1) {
-      chunk[0][0] = Blocks.dirt;
-    }
-    if (chunkIndex == 0) {
-      chunk[0][0] = Blocks.stone;
-    }
-    if (chunkIndex == 1) {
-      chunk[0][0] = Blocks.sand;
-    }
-    if (chunkIndex == 2) {
-      chunk[0][0] = Blocks.redFlower;
-    }
+    chunk = _addOre(chunk, Ore.iron, seed + 101);
+    chunk = _addOre(chunk, Ore.coal, seed + 111);
+    chunk = _addOre(chunk, Ore.gold, seed + 121);
+    chunk = _addOre(chunk, Ore.diamond, seed + 131);
 
     return chunk;
   }
