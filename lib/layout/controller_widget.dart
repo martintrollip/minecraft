@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
+import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/controller_button_widget.dart';
 
 class ControllerWidget extends StatelessWidget {
@@ -17,20 +18,14 @@ class ControllerWidget extends StatelessWidget {
         child: Row(
           children: [
             ControllerButtonWidget(
-              path: 'assets/controller/left_button.png',
-              onTap: () => playerData.componentMotionState =
-                  ComponentMotionState.walkingLeft,
-            ),
+                path: 'assets/controller/left_button.png',
+                onTap: () => GameMethods.instance.leftAction()),
             ControllerButtonWidget(
-              path: 'assets/controller/center_button.png',
-              onTap: () =>
-                  playerData.componentMotionState = ComponentMotionState.idle,
-            ),
+                path: 'assets/controller/center_button.png',
+                onTap: () => GameMethods.instance.jumpAction()),
             ControllerButtonWidget(
-              path: 'assets/controller/right_button.png',
-              onTap: () => playerData.componentMotionState =
-                  ComponentMotionState.walkingRight,
-            ),
+                path: 'assets/controller/right_button.png',
+                onTap: () => GameMethods.instance.rightAction()),
           ],
         ),
       ),

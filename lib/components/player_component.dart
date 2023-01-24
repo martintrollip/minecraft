@@ -1,9 +1,9 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft/global/global_game_reference.dart';
-import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 import '../global/player_data.dart';
@@ -13,9 +13,12 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   final double stepTime = 0.2;
   var isFacingRight = true;
   var yVelocity = 0.0;
+
   var isCollidingGround = false;
   var isCollidingLeft = false;
   var isCollidingRight = false;
+
+  var jumpForce = 0.0;
 
   late SpriteSheet walkingSheet;
   late SpriteSheet idleSheet;
@@ -80,6 +83,11 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     _movement(dt);
     _gravity(dt);
     _resetCollision();
+
+    if (jumpForce > 0) {
+      position.y -= jumpForce;
+      jumpForce = jumpForce * 0.7;
+    }
   }
 
   void _movement(double dt) {
@@ -96,6 +104,9 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       case ComponentMotionState.idle:
         _stand();
         break;
+      case ComponentMotionState.jumping:
+        _jump();
+        break;
     }
   }
 
@@ -107,6 +118,9 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         flipHorizontallyAroundCenter();
         isFacingRight = false;
       }
+    } else {
+      // GlobalGameReference.instance.game.worldData.playerData
+      //     .componentMotionState = ComponentMotionState.idle;
     }
   }
 
@@ -118,12 +132,20 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
         flipHorizontallyAroundCenter();
         isFacingRight = true;
       }
+    } else {
+      // GlobalGameReference.instance.game.worldData.playerData
+      //     .componentMotionState = ComponentMotionState.idle;
     }
   }
 
   void _stand() {
-    if (isCollidingLeft || isCollidingRight) {
-      animation = idleAnimation;
+    animation = idleAnimation;
+    jumpForce -= GameMethods.instance.jumpForce * 0.5;
+  }
+
+  void _jump() {
+    if (yVelocity <= 0) {
+      jumpForce = GameMethods.instance.jumpForce;
     }
   }
 

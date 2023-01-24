@@ -8,4 +8,5 @@ enum ComponentMotionState {
   walkingLeft,
   walkingRight,
   idle,
+  jumping,
 }

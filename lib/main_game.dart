@@ -1,5 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
+import 'package:flame/input.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/components/player_component.dart';
@@ -10,7 +13,8 @@ import 'package:minecraft/utils/chunk_generation_methods.dart';
 import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-class MainGame extends FlameGame with HasCollisionDetection {
+class MainGame extends FlameGame
+    with HasCollisionDetection, HasKeyboardHandlerComponents {
   MainGame({required this.worldData, bool debug = false}) {
     globalGameReference.game = this;
     debugMode = debug;
@@ -75,5 +79,35 @@ class MainGame extends FlameGame with HasCollisionDetection {
         worldData.visibleChunks.add(index);
       }
     });
+  }
+
+  @override
+  KeyEventResult onKeyEvent(
+    RawKeyEvent event,
+    Set<LogicalKeyboardKey> keysPressed,
+  ) {
+    super.onKeyEvent(event, keysPressed);
+
+    if (keysPressed.contains(LogicalKeyboardKey.arrowLeft) ||
+        keysPressed.contains(LogicalKeyboardKey.keyA)) {
+      GameMethods.instance.leftAction();
+    }
+
+    if (keysPressed.contains(LogicalKeyboardKey.arrowRight) ||
+        keysPressed.contains(LogicalKeyboardKey.keyD)) {
+      GameMethods.instance.rightAction();
+    }
+
+    if (keysPressed.contains(LogicalKeyboardKey.arrowUp) ||
+        keysPressed.contains(LogicalKeyboardKey.space) ||
+        keysPressed.contains(LogicalKeyboardKey.keyW)) {
+      GameMethods.instance.jumpAction();
+    }
+
+    if (keysPressed.isEmpty) {
+      GameMethods.instance.idleAction();
+    }
+
+    return KeyEventResult.ignored;
   }
 }

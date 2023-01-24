@@ -3,12 +3,33 @@ import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
 import 'package:minecraft/global/global_game_reference.dart';
+import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/constant.dart';
 
 class GameMethods {
   static GameMethods get instance {
     return GameMethods();
+  }
+
+  PlayerData _playerRef() {
+    return GlobalGameReference.instance.game.worldData.playerData;
+  }
+
+  void leftAction() {
+    _playerRef().componentMotionState = ComponentMotionState.walkingLeft;
+  }
+
+  void rightAction() {
+    _playerRef().componentMotionState = ComponentMotionState.walkingRight;
+  }
+
+  void jumpAction() {
+    _playerRef().componentMotionState = ComponentMotionState.jumping;
+  }
+
+  void idleAction() {
+    _playerRef().componentMotionState = ComponentMotionState.idle;
   }
 
   Vector2 get blockSize {
@@ -81,7 +102,11 @@ class GameMethods {
 
   // Adjust for framerate by using dt
   double getSpeed(double dt) {
-    return 3 * GameMethods.instance.blockSize.x * dt;
+    return 4 * GameMethods.instance.blockSize.x * dt;
+  }
+
+  double get jumpForce {
+    return 1.5 * GameMethods.instance.blockSize.y;
   }
 
   int getStartIndex(int chunkIndex) {
