@@ -13,7 +13,7 @@ class GameLayout extends StatelessWidget {
       children: [
         GameWidget(
           game: MainGame(
-            worldData: WorldData(seed: 1232114),
+            worldData: WorldData(seed: 9322), //1232114
             // debug: true,
           ),
         ),

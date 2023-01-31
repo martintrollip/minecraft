@@ -14,7 +14,7 @@ import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class MainGame extends FlameGame
-    with HasCollisionDetection, HasKeyboardHandlerComponents {
+    with HasCollisionDetection, HasKeyboardHandlerComponents, HasTappables {
   MainGame({required this.worldData, bool debug = false}) {
     globalGameReference.game = this;
     debugMode = debug;
@@ -109,5 +109,29 @@ class MainGame extends FlameGame
     }
 
     return KeyEventResult.ignored;
+  }
+
+  @override
+  void onTapDown(int pointerId, TapDownInfo info) {
+    super.onTapDown(pointerId, info);
+    _placeBlock(info.eventPosition.game);
+  }
+
+  void _placeBlock(Vector2 pixels) {
+    final blockIndex = GameMethods.instance.getBlockIndexFrom(pixels);
+    final chunkIndex = GameMethods.instance.getChunkIndexFrom(blockIndex);
+
+    if (blockIndex.y > 0 &&
+        blockIndex.y < chunkHeight &&
+        GameMethods.instance.canPlaceBlock(blockIndex)) {
+      final block = BlockComponent(
+        block: Blocks.sand,
+        index: blockIndex,
+        chunkIndex: chunkIndex,
+      );
+
+      GameMethods.instance.replaceBlock(block.block, blockIndex);
+      add(block);
+    }
   }
 }

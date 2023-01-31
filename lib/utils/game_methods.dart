@@ -1,7 +1,9 @@
+import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/blocks.dart';
@@ -102,7 +104,7 @@ class GameMethods {
 
   // Adjust for framerate by using dt
   double getSpeed(double dt) {
-    return 4 * GameMethods.instance.blockSize.x * dt;
+    return playerSpeed * GameMethods.instance.blockSize.x * dt;
   }
 
   double get jumpForce {
@@ -136,6 +138,13 @@ class GameMethods {
         blockSize.x;
   }
 
+  Vector2 get playerIndex {
+    final playerPosition =
+        GlobalGameReference.instance.game.playerComponent.position;
+    return Vector2(
+        playerPosition.x / blockSize.x, playerPosition.y / blockSize.y);
+  }
+
   int get playerChunk {
     return playerX >= 0 ? playerX ~/ chunkWidth : playerX ~/ chunkWidth - 1;
   }
@@ -157,5 +166,77 @@ class GameMethods {
     }
 
     return processed;
+  }
+
+  Vector2 getBlockIndexFrom(Vector2 gamePixels) {
+    return Vector2(
+      (gamePixels.x / blockSize.x).floorToDouble(),
+      (gamePixels.y / blockSize.y).floorToDouble(),
+    );
+  }
+
+  int getChunkIndexFrom(Vector2 blockIndex) {
+    return blockIndex.x >= 0
+        ? blockIndex.x ~/ chunkWidth
+        : (blockIndex.x ~/ chunkWidth) - 1;
+  }
+
+  void replaceBlock(Blocks? block, Vector2 blockIndex) {
+    if (blockIndex.x >= 0) {
+      GlobalGameReference.instance.game.worldData
+          .rightWorldChunks[blockIndex.y.toInt()][blockIndex.x.toInt()] = block;
+    } else {
+      GlobalGameReference
+              .instance.game.worldData.leftWorldChunks[blockIndex.y.toInt()]
+          [blockIndex.x.toInt().abs() - 1] = block;
+    }
+  }
+
+  bool canPlaceBlock(Vector2 positionIndex) {
+    print(
+        'dx=${playerIndex.distanceTo(positionIndex).ceil()} block=${getBlockAt(positionIndex)} adj=${isAdjacent(positionIndex)}');
+    if (playerIndex.distanceTo(positionIndex).ceil() <= 3 &&
+        getBlockAt(positionIndex) == null &&
+        isAdjacent(positionIndex)) {
+      return true;
+    }
+    return false;
+  }
+
+  Blocks? getBlockAt(Vector2 index) {
+    if (index.x >= 0) {
+      return GlobalGameReference.instance.game.worldData
+          .rightWorldChunks[index.y.toInt()][index.x.toInt()];
+    } else {
+      //TODO on the left we have bugs where were not clicking on the correct blocks
+      //TODO sometime a chunk is duplicated
+      //TODO block placements are not the same if we unload and reload the same chunk
+      return GlobalGameReference.instance.game.worldData
+          .leftWorldChunks[index.y.toInt()][index.x.toInt().abs() - 1];
+    }
+  }
+
+  bool isAdjacent(Vector2 index) {
+    // Top
+    if (getBlockAt(Vector2(index.x, index.y - 1)) != null) {
+      return true;
+    }
+
+    // Bottom
+    if (getBlockAt(Vector2(index.x, index.y + 1)) != null) {
+      return true;
+    }
+
+    // Left
+    if (getBlockAt(Vector2(index.x - 1, index.y)) != null) {
+      return true;
+    }
+
+    // Right
+    if (getBlockAt(Vector2(index.x + 1, index.y)) != null) {
+      return true;
+    }
+
+    return false;
   }
 }
