@@ -1,7 +1,6 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
-import 'package:flame/game.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/utils/game_methods.dart';
@@ -15,10 +14,13 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   var yVelocity = 0.0;
 
   var isCollidingGround = false;
+  var isCollidingCeiling = false;
   var isCollidingLeft = false;
   var isCollidingRight = false;
 
   var jumpForce = 0.0;
+  var localPlayerSpeed = 0.0;
+  var refreshSpeed = true;
 
   late SpriteSheet walkingSheet;
   late SpriteSheet idleSheet;
@@ -54,6 +56,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
     size = GameMethods.instance.blockSize * 1.5;
     position = Vector2(0, 100);
+
+    add(TimerComponent(
+      period: 1,
+      repeat: true,
+      onTick: () {
+        refreshSpeed = true;
+      },
+    ));
   }
 
   @override
@@ -61,10 +71,19 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     super.onCollision(intersectionPoints, other);
 
     intersectionPoints.forEach((Vector2 point) {
+      // Ground
       if (point.y > (position.y - (size.y * 0.4)) &&
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
               (size.x * 0.4)) {
         isCollidingGround = true;
+      }
+
+      // Ceiling
+      if (point.y < (position.y - (size.y * 0.75)) &&
+          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
+              (size.x * 0.75) && //TODO not detecting
+          jumpForce > 0) {
+        isCollidingCeiling = true;
       }
 
       if (point.y < (position.y - (size.y * 0.4))) {
@@ -82,24 +101,34 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     super.update(dt);
     _movement(dt);
     _gravity(dt);
+    _jumpLogic();
     _resetCollision();
 
+    if (refreshSpeed) {
+      localPlayerSpeed = GameMethods.instance.getSpeed(dt);
+      refreshSpeed = false;
+    }
+  }
+
+  void _jumpLogic() {
     if (jumpForce > 0) {
       position.y -= jumpForce;
       jumpForce = jumpForce * 0.7;
+
+      if (isCollidingCeiling) {
+        jumpForce = 0;
+      }
     }
   }
 
   void _movement(double dt) {
-    final adjustedSpeed = GameMethods.instance.getSpeed(dt);
-
     switch (GlobalGameReference
         .instance.game.worldData.playerData.componentMotionState) {
       case ComponentMotionState.walkingLeft:
-        _moveLeft(adjustedSpeed);
+        _moveLeft(localPlayerSpeed);
         break;
       case ComponentMotionState.walkingRight:
-        _moveRight(adjustedSpeed);
+        _moveRight(localPlayerSpeed);
         break;
       case ComponentMotionState.idle:
         _stand();
@@ -164,6 +193,7 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
 
   void _resetCollision() {
     isCollidingGround = false;
+    isCollidingCeiling = false;
     isCollidingLeft = false;
     isCollidingRight = false;
   }
