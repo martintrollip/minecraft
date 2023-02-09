@@ -193,9 +193,7 @@ class GameMethods {
   }
 
   bool canPlaceBlock(Vector2 positionIndex) {
-    print(
-        'dx=${playerIndex.distanceTo(positionIndex).ceil()} block=${getBlockAt(positionIndex)} adj=${isAdjacent(positionIndex)}');
-    if (playerIndex.distanceTo(positionIndex).ceil() <= 3 &&
+    if (playerIndex.distanceTo(positionIndex).ceil() <= maxPlacementRadius &&
         getBlockAt(positionIndex) == null &&
         isAdjacent(positionIndex)) {
       return true;

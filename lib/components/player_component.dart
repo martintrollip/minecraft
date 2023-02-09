@@ -79,10 +79,10 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
       }
 
       // Ceiling
-      if (point.y < (position.y - (size.y * 0.75)) &&
+      if (point.y < (position.y - (size.y * 1.5)) &&
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-              (size.x * 0.75) && //TODO not detecting
-          jumpForce > 0) {
+              (size.x * 0.75) &&
+          jumpForce >= 0) {
         isCollidingCeiling = true;
       }
 
