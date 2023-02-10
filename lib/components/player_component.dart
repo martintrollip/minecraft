@@ -4,22 +4,15 @@ import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
+import 'package:minecraft/resources/entity.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 import '../global/player_data.dart';
 
-class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
+class PlayerComponent extends Entity {
   final Vector2 spriteSize = Vector2.all(60);
   final double stepTime = 0.2;
-  var isFacingRight = true;
-  var yVelocity = 0.0;
 
-  var isCollidingGround = false;
-  var isCollidingCeiling = false;
-  var isCollidingLeft = false;
-  var isCollidingRight = false;
-
-  var jumpForce = 0.0;
   var localPlayerSpeed = 0.0;
   var refreshSpeed = true;
 
@@ -68,52 +61,17 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    super.onCollision(intersectionPoints, other);
-
-    if (other is BlockComponent) {
-      _blockCollision(intersectionPoints, other);
-    }
-  }
-
-  void _blockCollision(Set<Vector2> intersectionPoints, BlockComponent other) {
-    intersectionPoints.forEach((Vector2 point) {
-      if (!other.blockData.isCollidable) {
-        return;
-      }
-
-      // Ground
-      if (point.y > (position.y - (size.y * 0.4)) &&
-          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-              (size.x * 0.4)) {
-        isCollidingGround = true;
-      }
-
-      // Ceiling
-      if (point.y < (position.y - (size.y * 1.5)) &&
-          (intersectionPoints.first.x - intersectionPoints.last.x).abs() >
-              (size.x * 0.75) &&
-          jumpForce >= 0) {
-        isCollidingCeiling = true;
-      }
-
-      if (point.y < (position.y - (size.y * 0.4))) {
-        if (point.x > position.x) {
-          isCollidingRight = true;
-        } else {
-          isCollidingLeft = true;
-        }
-      }
-    });
-  }
-
-  @override
   void update(double dt) {
     super.update(dt);
-    _movement(dt);
-    _gravity(dt);
-    _jumpLogic();
-    _resetCollision();
+    movement(
+      GlobalGameReference
+          .instance.game.worldData.playerData.componentMotionState,
+      dt,
+      localPlayerSpeed,
+    );
+    gravity(dt);
+    jumpLogic();
+    resetCollision();
 
     if (refreshSpeed) {
       localPlayerSpeed = GameMethods.instance.getSpeed(dt);
@@ -121,92 +79,32 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     }
   }
 
-  void _jumpLogic() {
-    if (jumpForce > 0) {
-      position.y -= jumpForce;
-      jumpForce = jumpForce * 0.7;
-
-      if (isCollidingCeiling) {
-        jumpForce = 0;
-      }
-    }
-  }
-
-  void _movement(double dt) {
-    switch (GlobalGameReference
-        .instance.game.worldData.playerData.componentMotionState) {
+  void movement(ComponentMotionState motionState, double dt, double speed) {
+    switch (motionState) {
       case ComponentMotionState.walkingLeft:
-        _moveLeft(localPlayerSpeed);
+        moveLeft(speed);
+        animation = walkingAnimation;
         break;
       case ComponentMotionState.walkingRight:
-        _moveRight(localPlayerSpeed);
+        moveRight(speed);
+        animation = walkingAnimation;
         break;
       case ComponentMotionState.idle:
-        _stand();
+        stand();
+        animation = idleAnimation;
         break;
       case ComponentMotionState.jumping:
-        _jump();
+        jump();
+        animation = idleAnimation;
         break;
     }
   }
 
-  void _moveLeft(double speed) {
-    if (!isCollidingLeft) {
-      animation = walkingAnimation;
-      position.x -= speed;
-      if (isFacingRight) {
-        flipHorizontallyAroundCenter();
-        isFacingRight = false;
-      }
-    } else {
-      // GlobalGameReference.instance.game.worldData.playerData
-      //     .componentMotionState = ComponentMotionState.idle;
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is BlockComponent && other.blockData.isCollidable) {
+      super.onCollision(intersectionPoints, other);
     }
-  }
-
-  void _moveRight(double speed) {
-    if (!isCollidingRight) {
-      animation = walkingAnimation;
-      position.x += speed;
-      if (!isFacingRight) {
-        flipHorizontallyAroundCenter();
-        isFacingRight = true;
-      }
-    } else {
-      // GlobalGameReference.instance.game.worldData.playerData
-      //     .componentMotionState = ComponentMotionState.idle;
-    }
-  }
-
-  void _stand() {
-    animation = idleAnimation;
-    jumpForce -= GameMethods.instance.jumpForce * 0.5;
-  }
-
-  void _jump() {
-    if (yVelocity <= 0) {
-      jumpForce = GameMethods.instance.jumpForce;
-    }
-  }
-
-  void _gravity(double dt) {
-    if (!isCollidingGround) {
-      final adjustedGravity = GameMethods.instance.getGravity(dt);
-
-      if (yVelocity < adjustedGravity * 5) {
-        yVelocity += adjustedGravity;
-      }
-      position.y += yVelocity;
-    } else {
-      yVelocity = 0;
-    }
-  }
-
-  void _resetCollision() {
-    isCollidingGround = false;
-    isCollidingCeiling = false;
-    isCollidingLeft = false;
-    isCollidingRight = false;
   }
 
   @override

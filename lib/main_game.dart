@@ -61,6 +61,8 @@ class MainGame extends FlameGame
   void update(double dt) {
     super.update(dt);
 
+    _renderItems();
+
     worldData.chunksToRender.asMap().forEach((_, index) {
       if (!worldData.visibleChunks.contains(index)) {
         // chunk not rendered yet
@@ -77,6 +79,22 @@ class MainGame extends FlameGame
 
         renderChunk(index);
         worldData.visibleChunks.add(index);
+      }
+    });
+  }
+
+  void _renderItems() {
+    worldData.items.asMap().forEach((index, item) {
+      if (!item.isMounted) {
+        if (worldData.chunksToRender.contains(
+            GameMethods.instance.getChunkIndexFrom(item.spawnBlockIndex))) {
+          add(item);
+        }
+      } else {
+        if (!worldData.chunksToRender.contains(
+            GameMethods.instance.getChunkIndexFrom(item.spawnBlockIndex))) {
+          remove(item);
+        }
       }
     });
   }

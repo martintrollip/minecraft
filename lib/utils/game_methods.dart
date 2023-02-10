@@ -98,7 +98,7 @@ class GameMethods {
 
   // Adjust for framerate by using dt
   double getGravity(double dt) {
-    return 3 * GameMethods.instance.blockSize.y * dt;
+    return gravity * GameMethods.instance.blockSize.y * dt;
   }
 
   // Adjust for framerate by using dt

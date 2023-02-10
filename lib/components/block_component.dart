@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:minecraft/components/block_breaking_component.dart';
+import 'package:minecraft/components/item_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/game_methods.dart';
@@ -28,11 +29,9 @@ class BlockComponent extends SpriteComponent with Tappable {
 
     if (blockData.breakable) {
       breaking = BlockBreakingComponent(
-          baseSpeed: blockData.baseMiningSpeed,
-          onAnimationComplete: () {
-            GameMethods.instance.replaceBlock(null, index);
-            removeFromParent();
-          });
+        baseSpeed: blockData.baseMiningSpeed,
+        onAnimationComplete: onBroken,
+      );
     }
 
     add(RectangleHitbox(size: size - (size * 0.1)));
@@ -66,6 +65,13 @@ class BlockComponent extends SpriteComponent with Tappable {
     if (!breaking.isMounted) {
       add(breaking);
     }
+  }
+
+  void onBroken() {
+    GameMethods.instance.replaceBlock(null, index);
+    GlobalGameReference.instance.game.worldData.items
+        .add(ItemComponent(index, block));
+    removeFromParent();
   }
 
   void removeBreaking() {
