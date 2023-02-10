@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
+import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
@@ -41,14 +42,14 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
     anchor = Anchor.bottomCenter;
 
     idleSheet = SpriteSheet(
-      image: await Flame.images
-          .load('sprite_sheets/player/player_idle_sprite_sheet.png'),
+      image: Flame.images
+          .fromCache('sprite_sheets/player/player_idle_sprite_sheet.png'),
       srcSize: spriteSize,
     );
 
     walkingSheet = SpriteSheet(
-      image: await Flame.images
-          .load('sprite_sheets/player/player_walking_sprite_sheet.png'),
+      image: Flame.images
+          .fromCache('sprite_sheets/player/player_walking_sprite_sheet.png'),
       srcSize: spriteSize,
     );
 
@@ -70,7 +71,17 @@ class PlayerComponent extends SpriteAnimationComponent with CollisionCallbacks {
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
 
+    if (other is BlockComponent) {
+      _blockCollision(intersectionPoints, other);
+    }
+  }
+
+  void _blockCollision(Set<Vector2> intersectionPoints, BlockComponent other) {
     intersectionPoints.forEach((Vector2 point) {
+      if (!other.blockData.isCollidable) {
+        return;
+      }
+
       // Ground
       if (point.y > (position.y - (size.y * 0.4)) &&
           (intersectionPoints.first.x - intersectionPoints.last.x).abs() >

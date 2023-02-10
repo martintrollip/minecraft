@@ -3,7 +3,6 @@ import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/blocks.dart';
@@ -51,17 +50,17 @@ class GameMethods {
     return MediaQueryData.fromWindow(WidgetsBinding.instance.window).size;
   }
 
-  Future<SpriteSheet> blockSpriteSheet() async {
+  SpriteSheet blockSpriteSheet() {
     return SpriteSheet(
-      image: await Flame.images.load(
+      image: Flame.images.fromCache(
         'sprite_sheets/blocks/block_sprite_sheet.png',
       ),
       srcSize: Vector2.all(60),
     );
   }
 
-  Future<Sprite> blockSprite(Blocks block) async {
-    final sheet = await blockSpriteSheet();
+  Sprite blockSprite(Blocks block) {
+    final sheet = blockSpriteSheet();
     return sheet.getSprite(0, block.index);
   }
 

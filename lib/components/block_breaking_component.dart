@@ -16,8 +16,8 @@ class BlockBreakingComponent extends SpriteAnimationComponent {
     super.onLoad();
 
     SpriteSheet animationSheet = SpriteSheet(
-        image: await Flame.images
-            .load('sprite_sheets/blocks/block_breaking_sprite_sheet.png'),
+        image: Flame.images
+            .fromCache('sprite_sheets/blocks/block_breaking_sprite_sheet.png'),
         srcSize: spriteSize);
 
     animation = animationSheet.createAnimation(

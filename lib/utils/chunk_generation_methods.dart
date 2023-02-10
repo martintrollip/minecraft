@@ -51,6 +51,7 @@ class ChunkGenerationMethods {
     chunk = _addOre(chunk, Ore.coal, seed + 111);
     chunk = _addOre(chunk, Ore.gold, seed + 121);
     chunk = _addOre(chunk, Ore.diamond, seed + 131);
+    chunk = _addBedRock(yValues, chunk, Blocks.bedrock);
 
     return chunk;
   }
@@ -159,6 +160,17 @@ class ChunkGenerationMethods {
           chunk[index][rowIndex] = ore.block;
         }
       });
+    });
+
+    return chunk;
+  }
+
+  List<List<Blocks?>> _addBedRock(
+      List<int> yValues, List<List<Blocks?>> chunk, Blocks block) {
+    yValues.asMap().forEach((index, value) {
+      for (int i = (chunkHeight * 0.96).toInt(); i < chunkHeight; i++) {
+        chunk[i][index] = block;
+      }
     });
 
     return chunk;

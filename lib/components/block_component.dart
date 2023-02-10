@@ -26,15 +26,17 @@ class BlockComponent extends SpriteComponent with Tappable {
 
     blockData = BlockData.getFor(block);
 
-    breaking = BlockBreakingComponent(
-        baseSpeed: blockData.baseMiningSpeed,
-        onAnimationComplete: () {
-          GameMethods.instance.replaceBlock(null, index);
-          removeFromParent();
-        });
+    if (blockData.breakable) {
+      breaking = BlockBreakingComponent(
+          baseSpeed: blockData.baseMiningSpeed,
+          onAnimationComplete: () {
+            GameMethods.instance.replaceBlock(null, index);
+            removeFromParent();
+          });
+    }
 
     add(RectangleHitbox(size: size - (size * 0.1)));
-    sprite = await GameMethods.instance.blockSprite(block);
+    sprite = GameMethods.instance.blockSprite(block);
   }
 
   @override

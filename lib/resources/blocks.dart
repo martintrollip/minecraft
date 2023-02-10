@@ -44,10 +44,11 @@ class BlockData {
       case Blocks.yellowFlower:
       case Blocks.whiterFlower:
         return plants;
-      case Blocks.sand:
       case Blocks.birchLeaf:
       case Blocks.cactus:
         return leaf;
+      case Blocks.sand:
+        return sand;
       case Blocks.grass:
       case Blocks.dirt:
         return soil;
@@ -76,6 +77,11 @@ class BlockData {
 
   static BlockData leaf = BlockData(
     isCollidable: false,
+    baseMiningSpeed: 0.5,
+  );
+
+  static BlockData sand = BlockData(
+    isCollidable: true,
     baseMiningSpeed: 0.5,
   );
 
