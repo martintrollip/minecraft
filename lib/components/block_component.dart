@@ -1,10 +1,12 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
+import 'package:minecraft/components/block_breaking_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-class BlockComponent extends SpriteComponent {
+class BlockComponent extends SpriteComponent with Tappable {
   BlockComponent({
     required this.block,
     required this.index,
@@ -12,12 +14,25 @@ class BlockComponent extends SpriteComponent {
   });
 
   final Blocks block;
+  late final BlockData blockData;
   final Vector2 index;
   final int chunkIndex;
+
+  late final BlockBreakingComponent breaking;
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
+
+    blockData = BlockData.getFor(block);
+
+    breaking = BlockBreakingComponent(
+        baseSpeed: blockData.baseMiningSpeed,
+        onAnimationComplete: () {
+          GameMethods.instance.replaceBlock(null, index);
+          removeFromParent();
+        });
+
     add(RectangleHitbox(size: size - (size * 0.1)));
     sprite = await GameMethods.instance.blockSprite(block);
   }
@@ -43,5 +58,39 @@ class BlockComponent extends SpriteComponent {
       GlobalGameReference.instance.game.worldData.visibleChunks
           .remove(chunkIndex);
     }
+  }
+
+  void addBreaking() {
+    if (!breaking.isMounted) {
+      add(breaking);
+    }
+  }
+
+  void removeBreaking() {
+    if (breaking.isMounted) {
+      breaking.animation!.reset();
+      remove(breaking);
+    }
+  }
+
+  @override
+  bool onTapDown(TapDownInfo info) {
+    super.onTapDown(info);
+    addBreaking();
+    return true;
+  }
+
+  @override
+  bool onTapUp(TapUpInfo info) {
+    super.onTapUp(info);
+    removeBreaking();
+    return true;
+  }
+
+  @override
+  bool onTapCancel() {
+    super.onTapCancel();
+    removeBreaking();
+    return true;
   }
 }
