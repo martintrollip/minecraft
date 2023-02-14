@@ -54,9 +54,13 @@ class ItemComponent extends Entity {
     if (other is BlockComponent && other.blockData.isCollidable) {
       super.onCollision(intersectionPoints, other);
     } else if (other is PlayerComponent) {
-      GlobalGameReference.instance.game.worldData.items.remove(this);
-      removeFromParent();
-      print("add $block to inventory ");
+      final added = GlobalGameReference.instance.game.worldData.inventoryManager
+          .addItem(block);
+
+      if (added) {
+        GlobalGameReference.instance.game.worldData.items.remove(this);
+        removeFromParent();
+      }
     }
   }
 }

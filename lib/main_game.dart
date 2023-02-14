@@ -142,14 +142,20 @@ class MainGame extends FlameGame
     if (blockIndex.y > 0 &&
         blockIndex.y < chunkHeight &&
         GameMethods.instance.canPlaceBlock(blockIndex)) {
-      final block = BlockComponent(
-        block: Blocks.sand,
-        index: blockIndex,
-        chunkIndex: chunkIndex,
-      );
+      final type = worldData.inventoryManager
+          .items[0]; //TODO eventually apply selected slot logic here
+      if (type.block != null) {
+        final block = BlockComponent(
+          block: type.block!,
+          index: blockIndex,
+          chunkIndex: chunkIndex,
+        );
 
-      GameMethods.instance.replaceBlock(block.block, blockIndex);
-      add(block);
+        GameMethods.instance.replaceBlock(block.block, blockIndex);
+        add(block);
+
+        worldData.inventoryManager.removeItem(type);
+      }
     }
   }
 }
