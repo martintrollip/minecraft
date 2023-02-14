@@ -1,5 +1,5 @@
 import 'package:minecraft/components/item_component.dart';
-import 'package:minecraft/global/inventory.dart';
+import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/constant.dart';

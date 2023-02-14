@@ -1,0 +1,4 @@
+enum SlotType {
+  inventory,
+  itemBar,
+}

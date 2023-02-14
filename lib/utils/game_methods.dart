@@ -38,6 +38,10 @@ class GameMethods {
     return Vector2.all(screenSize().width / chunkWidth);
   }
 
+  double get inventorySlotSize {
+    return screenSize().height * 0.1;
+  }
+
   int get freeArea {
     return (chunkHeight * 0.4).toInt();
   }

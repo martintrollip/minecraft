@@ -9,7 +9,6 @@ class ControllerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerData = GlobalGameReference.instance.game.worldData.playerData;
     return Positioned.fill(
       bottom: 100,
       left: 20,

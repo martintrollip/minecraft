@@ -1,25 +1,24 @@
+import 'package:get/get.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/constant.dart';
 
 class InventoryManager {
-  final List<InventorySlot> _items = List.generate(
-    5,
-    (index) => InventorySlot(index: index),
-  );
+  final List<InventorySlot> _items =
+      List.generate(36, (index) => InventorySlot(index: index));
 
   List<InventorySlot> get items => _items;
 
   bool addItem(Blocks item) {
-    var index = _items.indexWhere(
-        (element) => (element.block == item && element.count < stackSize));
+    var index = _items.indexWhere((element) =>
+        (element.block == item && element.count.value < stackSize));
     if (index != -1) {
-      _items[index].count++;
+      _items[index].count.value++;
       return true;
     } else {
       index = _items.indexWhere((element) => element.block == null);
       if (index != -1) {
         _items[index].block = item;
-        _items[index].count++;
+        _items[index].count.value++;
         return true;
       } else {
         return false;
@@ -28,20 +27,18 @@ class InventoryManager {
   }
 
   void removeItem(InventorySlot item) {
-    if (item.count > 1) {
-      item.count--;
-    } else {
+    item.count.value--;
+    if (item.count.value == 0) {
       item.block = null;
-      item.count = 0;
     }
   }
 }
 
 class InventorySlot {
-  InventorySlot({required this.index, this.block, this.count = 0});
+  InventorySlot({required this.index, this.block});
 
   Blocks? block;
-  int count;
+  Rx<int> count = 0.obs;
 
   final int index;
 }
