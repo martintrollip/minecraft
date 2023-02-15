@@ -6,6 +6,8 @@ class InventoryManager {
   final List<InventorySlot> _items =
       List.generate(36, (index) => InventorySlot(index: index));
 
+  Rx<int> currentSelection = 0.obs;
+
   List<InventorySlot> get items => _items;
 
   bool addItem(Blocks item) {

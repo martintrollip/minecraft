@@ -143,7 +143,7 @@ class MainGame extends FlameGame
         blockIndex.y < chunkHeight &&
         GameMethods.instance.canPlaceBlock(blockIndex)) {
       final type = worldData.inventoryManager
-          .items[0]; //TODO eventually apply selected slot logic here
+          .items[worldData.inventoryManager.currentSelection.value];
       if (type.block != null) {
         final block = BlockComponent(
           block: type.block!,
