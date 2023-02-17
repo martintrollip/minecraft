@@ -7,26 +7,33 @@ import 'package:minecraft/widgets/inventory/inventory_slot_widget.dart';
 import 'inventory_slot_type.dart';
 
 class ItemBar extends StatelessWidget {
-  const ItemBar({super.key});
+  const ItemBar(SlotType type, {int startIndex = 0, super.key})
+      : _type = type,
+        _startIndex = startIndex;
+
+  final SlotType _type;
+  final int _startIndex;
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: EdgeInsets.all(GameMethods.instance.inventorySlotSize / 4),
+        padding: _type != SlotType.inventory
+            ? EdgeInsets.all(GameMethods.instance.inventorySlotSize / 4)
+            : EdgeInsets.zero,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            InventorySlotWidget(SlotType.itemBar, _slot(0)),
-            InventorySlotWidget(SlotType.itemBar, _slot(1)),
-            InventorySlotWidget(SlotType.itemBar, _slot(2)),
-            InventorySlotWidget(SlotType.itemBar, _slot(3)),
-            InventorySlotWidget(SlotType.itemBar, _slot(4)),
-            InventorySlotWidget(SlotType.itemBar, _slot(5)),
-            InventorySlotWidget(SlotType.itemBar, _slot(6)),
-            InventorySlotWidget(SlotType.itemBar, _slot(7)),
-            InventorySlotWidget(SlotType.itemBar, _slot(8)),
+            InventorySlotWidget(_type, _slot(_startIndex + 0)),
+            InventorySlotWidget(_type, _slot(_startIndex + 1)),
+            InventorySlotWidget(_type, _slot(_startIndex + 2)),
+            InventorySlotWidget(_type, _slot(_startIndex + 3)),
+            InventorySlotWidget(_type, _slot(_startIndex + 4)),
+            InventorySlotWidget(_type, _slot(_startIndex + 5)),
+            InventorySlotWidget(_type, _slot(_startIndex + 6)),
+            InventorySlotWidget(_type, _slot(_startIndex + 7)),
+            InventorySlotWidget(_type, _slot(_startIndex + 8)),
           ],
         ),
       ),

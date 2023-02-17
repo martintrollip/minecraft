@@ -39,7 +39,7 @@ class GameMethods {
   }
 
   double get inventorySlotSize {
-    return screenSize().height * 0.1;
+    return screenSize().height * 0.09;
   }
 
   int get freeArea {
