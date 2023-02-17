@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/utils/game_methods.dart';
+import 'package:minecraft/widgets/inventory/inventory_button.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_widget.dart';
 
 import 'inventory_slot_type.dart';
@@ -16,10 +17,11 @@ class ItemBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isBar = _type == SlotType.itemBar;
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: _type != SlotType.inventory
+        padding: isBar
             ? EdgeInsets.all(GameMethods.instance.inventorySlotSize / 4)
             : EdgeInsets.zero,
         child: Row(
@@ -34,6 +36,7 @@ class ItemBar extends StatelessWidget {
             InventorySlotWidget(_type, _slot(_startIndex + 6)),
             InventorySlotWidget(_type, _slot(_startIndex + 7)),
             InventorySlotWidget(_type, _slot(_startIndex + 8)),
+            if (isBar) const InventoryButton(),
           ],
         ),
       ),

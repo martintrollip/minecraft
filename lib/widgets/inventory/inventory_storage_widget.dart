@@ -12,24 +12,27 @@ class InventoryStorage extends StatelessWidget {
         (GameMethods.instance.inventorySlotSize / 2);
 
     return SizedBox.square(
-      dimension: size,
-      child: Stack(fit: StackFit.expand, children: [
-        Image.asset('assets/images/inventory/inventory_background.png'),
-        Positioned(
-          left: GameMethods.instance.inventorySlotSize / 4,
-          bottom: GameMethods.instance.inventorySlotSize / 2,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const ItemBar(SlotType.inventory, startIndex: 27),
-              const ItemBar(SlotType.inventory, startIndex: 18),
-              const ItemBar(SlotType.inventory, startIndex: 9),
-              SizedBox(height: GameMethods.instance.inventorySlotSize / 4),
-              const ItemBar(SlotType.inventory),
-            ],
+      dimension: GameMethods.instance.screenSize().height * 0.8,
+      child: FittedBox(
+        child: Stack(children: [
+          Image.asset('assets/images/inventory/inventory_background.png'),
+          Positioned(
+            left: GameMethods.instance.inventorySlotSize / 4,
+            right: GameMethods.instance.inventorySlotSize / 4,
+            bottom: GameMethods.instance.inventorySlotSize / 2,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const ItemBar(SlotType.inventory, startIndex: 27),
+                const ItemBar(SlotType.inventory, startIndex: 18),
+                const ItemBar(SlotType.inventory, startIndex: 9),
+                SizedBox(height: GameMethods.instance.inventorySlotSize / 4),
+                const ItemBar(SlotType.inventory),
+              ],
+            ),
           ),
-        ),
-      ]),
+        ]),
+      ),
 
       //add slots
     );

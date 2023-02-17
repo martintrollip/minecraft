@@ -6,6 +6,7 @@ import 'package:minecraft/main_game.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_type.dart';
 import 'package:minecraft/widgets/inventory/inventory_storage_widget.dart';
 import 'package:minecraft/widgets/inventory/item_bar.dart';
+import 'package:minecraft/widgets/inventory/player_inventory.dart';
 
 class GameLayout extends StatelessWidget {
   const GameLayout({super.key});
@@ -22,7 +23,7 @@ class GameLayout extends StatelessWidget {
         ),
         const ControllerWidget(),
         const ItemBar(SlotType.itemBar),
-        const InventoryStorage(),
+        const PlayerInventoryWidget(),
       ],
     );
   }

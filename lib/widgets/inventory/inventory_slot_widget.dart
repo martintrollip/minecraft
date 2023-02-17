@@ -15,54 +15,108 @@ class InventorySlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (_type == SlotType.itemBar) {
-          GlobalGameReference.instance.game.worldData.inventoryManager
-              .currentSelection.value = _slot.index;
-        }
-      },
-      child: Obx(() {
-        return Stack(
-          children: [
-            InventorySlotBackground(_type,
-                isSelected: GlobalGameReference.instance.game.worldData
-                        .inventoryManager.currentSelection.value ==
-                    _slot.index),
-            if (_slot.count.value > 0) ...[
-              Positioned.fill(
-                child: Padding(
-                  padding: EdgeInsets.all(
-                      GameMethods.instance.inventorySlotSize / 4),
-                  child: SpriteWidget(
-                      sprite: GameMethods.instance.blockSprite(_slot.block!)),
-                ),
-              ),
-              //add counter with minecraft font
-              Positioned(
-                bottom: GameMethods.instance.inventorySlotSize / 6,
-                right: GameMethods.instance.inventorySlotSize / 6,
-                child: Text(
-                  _slot.count.value.toString(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: GameMethods.instance.inventorySlotSize / 4,
-                      fontFamily: 'MinecraftFont',
-                      shadows: const [
-                        Shadow(
-                          blurRadius: 1,
-                          color: Colors.black,
-                          offset: Offset(1, 1),
-                        ),
-                      ]),
-                ),
-              ),
-            ] else ...[
-              const SizedBox.shrink()
-            ]
-          ],
-        );
-      }),
+    if (_type == SlotType.itemBar) {
+      return getChild();
+    }
+
+    return Draggable(
+      feedback: BlocKDrag(_slot),
+      childWhenDragging: InventorySlotBackground(_type,
+          isSelected: GlobalGameReference.instance.game.worldData
+                  .inventoryManager.currentSelection.value ==
+              _slot.index),
+      child: GestureDetector(
+        onTap: () {
+          if (_type == SlotType.itemBar) {
+            GlobalGameReference.instance.game.worldData.inventoryManager
+                .currentSelection.value = _slot.index;
+          }
+        },
+        child: getChild(),
+      ),
     );
+  }
+
+  Widget getChild() {
+    return Obx(() {
+      return Stack(
+        children: [
+          InventorySlotBackground(_type,
+              isSelected: GlobalGameReference.instance.game.worldData
+                      .inventoryManager.currentSelection.value ==
+                  _slot.index),
+          if (_slot.count.value > 0) ...[
+            Positioned.fill(
+              child: Padding(
+                padding:
+                    EdgeInsets.all(GameMethods.instance.inventorySlotSize / 4),
+                child: SpriteWidget(
+                    sprite: GameMethods.instance.blockSprite(_slot.block!)),
+              ),
+            ),
+            //add counter with minecraft font
+            Positioned(
+              bottom: GameMethods.instance.inventorySlotSize / 6,
+              right: GameMethods.instance.inventorySlotSize / 6,
+              child: Text(
+                _slot.count.value.toString(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: GameMethods.instance.inventorySlotSize / 4,
+                    fontFamily: 'MinecraftFont',
+                    shadows: const [
+                      Shadow(
+                        blurRadius: 1,
+                        color: Colors.black,
+                        offset: Offset(1, 1),
+                      ),
+                    ]),
+              ),
+            ),
+          ] else ...[
+            const SizedBox.shrink()
+          ]
+        ],
+      );
+    });
+  }
+}
+
+class BlocKDrag extends StatelessWidget {
+  const BlocKDrag(InventorySlot slot, {super.key}) : _slot = slot;
+
+  final InventorySlot _slot;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_slot.block == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Stack(children: [
+      Padding(
+        padding: EdgeInsets.all(GameMethods.instance.inventorySlotSize / 4),
+        child: SpriteWidget(
+            sprite: GameMethods.instance.blockSprite(_slot.block!)),
+      ),
+      Positioned(
+        bottom: GameMethods.instance.inventorySlotSize / 6,
+        right: GameMethods.instance.inventorySlotSize / 6,
+        child: Text(
+          _slot.count.value.toString(),
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: GameMethods.instance.inventorySlotSize / 4,
+              fontFamily: 'MinecraftFont',
+              shadows: const [
+                Shadow(
+                  blurRadius: 1,
+                  color: Colors.black,
+                  offset: Offset(1, 1),
+                ),
+              ]),
+        ),
+      ),
+    ]);
   }
 }

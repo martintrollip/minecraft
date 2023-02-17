@@ -8,6 +8,8 @@ class InventoryManager {
 
   Rx<int> currentSelection = 0.obs;
 
+  Rx<bool> isOpen = false.obs;
+
   List<InventorySlot> get items => _items;
 
   bool addItem(Blocks item) {
@@ -33,6 +35,10 @@ class InventoryManager {
     if (item.count.value == 0) {
       item.block = null;
     }
+  }
+
+  void toggleInventory() {
+    isOpen.value = !isOpen.value;
   }
 }
 
