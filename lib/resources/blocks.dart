@@ -87,7 +87,7 @@ class BlockData {
 
   static BlockData soil = BlockData(
     isCollidable: true,
-    baseMiningSpeed: 0.75,
+    baseMiningSpeed: 0.000001, //0.75,
   );
 
   static BlockData wood = BlockData(

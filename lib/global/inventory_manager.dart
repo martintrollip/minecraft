@@ -47,6 +47,15 @@ class InventorySlot {
 
   Blocks? block;
   Rx<int> count = 0.obs;
-
+  bool get isEmpty => count.value == 0;
   final int index;
+
+  void emptySlot() {
+    block = null;
+    count.value = 0;
+  }
+
+  int freeSpace() {
+    return stackSize - count.value;
+  }
 }

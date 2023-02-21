@@ -20,65 +20,96 @@ class InventorySlotWidget extends StatelessWidget {
     }
 
     return Draggable(
+      data: _slot,
       feedback: BlocKDrag(_slot),
       childWhenDragging: InventorySlotBackground(_type,
           isSelected: GlobalGameReference.instance.game.worldData
                   .inventoryManager.currentSelection.value ==
               _slot.index),
-      child: GestureDetector(
-        onTap: () {
-          if (_type == SlotType.itemBar) {
-            GlobalGameReference.instance.game.worldData.inventoryManager
-                .currentSelection.value = _slot.index;
-          }
-        },
-        child: getChild(),
-      ),
+      child: getChild(),
     );
   }
 
   Widget getChild() {
-    return Obx(() {
-      return Stack(
-        children: [
-          InventorySlotBackground(_type,
-              isSelected: GlobalGameReference.instance.game.worldData
-                      .inventoryManager.currentSelection.value ==
-                  _slot.index),
-          if (_slot.count.value > 0) ...[
-            Positioned.fill(
-              child: Padding(
-                padding:
-                    EdgeInsets.all(GameMethods.instance.inventorySlotSize / 4),
-                child: SpriteWidget(
-                    sprite: GameMethods.instance.blockSprite(_slot.block!)),
+    return GestureDetector(
+      onTap: () {
+        if (_type == SlotType.itemBar) {
+          GlobalGameReference.instance.game.worldData.inventoryManager
+              .currentSelection.value = _slot.index;
+        }
+      },
+      child: Obx(() {
+        return Stack(
+          children: [
+            InventorySlotBackground(_type,
+                isSelected: GlobalGameReference.instance.game.worldData
+                        .inventoryManager.currentSelection.value ==
+                    _slot.index),
+            if (_slot.count.value > 0) ...[
+              Positioned.fill(
+                child: Padding(
+                  padding: EdgeInsets.all(
+                      GameMethods.instance.inventorySlotSize / 4),
+                  child: SpriteWidget(
+                      sprite: GameMethods.instance.blockSprite(_slot.block!)),
+                ),
               ),
-            ),
-            //add counter with minecraft font
-            Positioned(
-              bottom: GameMethods.instance.inventorySlotSize / 6,
-              right: GameMethods.instance.inventorySlotSize / 6,
-              child: Text(
-                _slot.count.value.toString(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: GameMethods.instance.inventorySlotSize / 4,
-                    fontFamily: 'MinecraftFont',
-                    shadows: const [
-                      Shadow(
-                        blurRadius: 1,
-                        color: Colors.black,
-                        offset: Offset(1, 1),
-                      ),
-                    ]),
+              //add counter with minecraft font
+              Positioned(
+                bottom: GameMethods.instance.inventorySlotSize / 6,
+                right: GameMethods.instance.inventorySlotSize / 6,
+                child: Text(
+                  _slot.count.value.toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: GameMethods.instance.inventorySlotSize / 4,
+                      fontFamily: 'MinecraftFont',
+                      shadows: const [
+                        Shadow(
+                          blurRadius: 1,
+                          color: Colors.black,
+                          offset: Offset(1, 1),
+                        ),
+                      ]),
+                ),
               ),
-            ),
-          ] else ...[
-            const SizedBox.shrink()
-          ]
-        ],
-      );
-    });
+            ] else ...[
+              const SizedBox.shrink()
+            ],
+            getDragTarget(),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget getDragTarget() {
+    return DragTarget(
+      builder: (_, __, ___) {
+        return SizedBox.square(
+          dimension: GameMethods.instance.inventorySlotSize,
+        );
+      },
+      onAccept: (InventorySlot data) {
+        if (_slot.isEmpty) {
+          _slot.block = data.block;
+          _slot.count.value = data.count.value;
+          data.emptySlot();
+        } else if (_slot.block == data.block) {
+          int freeSpace = _slot.freeSpace();
+
+          if (freeSpace > 0) {
+            if (freeSpace >= data.count.value) {
+              _slot.count.value += data.count.value;
+              data.emptySlot();
+            } else {
+              _slot.count.value += freeSpace;
+              data.count.value -= freeSpace;
+            }
+          }
+        }
+      },
+    );
   }
 }
 
