@@ -1,4 +1,1 @@
-enum SlotType {
-  inventory,
-  itemBar,
-}
+enum SlotType { inventory, itemBar, crafting }

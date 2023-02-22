@@ -1,4 +1,5 @@
 import 'package:minecraft/components/item_component.dart';
+import 'package:minecraft/global/crafting_manager.dart';
 import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/blocks.dart';
@@ -33,4 +34,6 @@ class WorldData {
   List<ItemComponent> items = [];
 
   InventoryManager inventoryManager = InventoryManager();
+
+  CraftingManger craftingManger = CraftingManger();
 }
