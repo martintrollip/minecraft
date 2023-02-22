@@ -31,9 +31,9 @@ class InventoryManager {
     }
   }
 
-  void removeItem(InventorySlot item) {
-    item.count.value--;
-    if (item.count.value == 0) {
+  void removeItem(InventorySlot item, {int count = 1}) {
+    item.count.value -= count;
+    if (item.count.value <= 0) {
       item.block = null;
     }
   }

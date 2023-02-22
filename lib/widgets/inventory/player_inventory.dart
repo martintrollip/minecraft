@@ -19,18 +19,18 @@ class PlayerInventoryWidget extends StatelessWidget {
         child: Align(
           alignment: Alignment.center,
           child: Stack(
-            children: [
-              const InventoryStorage(),
-              Positioned(
-                top: GameMethods.instance.inventorySlotSize / 2,
-                left: GameMethods.instance.inventorySlotSize / 4,
-                right: GameMethods.instance.inventorySlotSize / 4,
-                child: Container(
-                  height: GameMethods.instance.inventorySlotSize * 3.6,
-                  width: GameMethods.instance.inventorySlotSize * 9,
-                  color: Colors.red,
-                ),
-              )
+            children: const [
+              InventoryStorage(),
+              // Positioned(
+              //   top: GameMethods.instance.inventorySlotSize / 2,
+              //   left: GameMethods.instance.inventorySlotSize / 4,
+              //   right: GameMethods.instance.inventorySlotSize / 4,
+              //   child: Container(
+              //     height: GameMethods.instance.inventorySlotSize * 3.6,
+              //     width: GameMethods.instance.inventorySlotSize * 9,
+              //     color: Colors.red,
+              //   ),
+              // )
             ],
           ),
         ),

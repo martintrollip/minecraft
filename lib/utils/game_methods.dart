@@ -8,6 +8,8 @@ import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/constant.dart';
 
+enum Direction { left, right, top, bottom }
+
 class GameMethods {
   static GameMethods get instance {
     return GameMethods();
@@ -139,6 +141,11 @@ class GameMethods {
   double get playerX {
     return GlobalGameReference.instance.game.playerComponent.position.x /
         blockSize.x;
+  }
+
+  double get playerY {
+    return GlobalGameReference.instance.game.playerComponent.position.y /
+        blockSize.y;
   }
 
   Vector2 get playerIndex {
