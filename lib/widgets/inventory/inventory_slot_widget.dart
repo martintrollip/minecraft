@@ -32,6 +32,20 @@ class InventorySlotWidget extends StatelessWidget {
 
   Widget getChild() {
     return GestureDetector(
+      onLongPress: () {
+        if (_type == SlotType.inventory) {
+          if (_slot.count.value > 1) {
+            int half = (_slot.count.value / 2).floor();
+            _slot.count.value -= half;
+            GlobalGameReference.instance.game.worldData.inventoryManager
+                .addItem(
+              _slot.block!,
+              count: half,
+              split: true,
+            );
+          }
+        }
+      },
       onTap: () {
         if (_type == SlotType.itemBar) {
           GlobalGameReference.instance.game.worldData.inventoryManager

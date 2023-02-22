@@ -12,17 +12,18 @@ class InventoryManager {
 
   List<InventorySlot> get items => _items;
 
-  bool addItem(Blocks item) {
+  bool addItem(Blocks item, {int count = 1, bool split = false}) {
     var index = _items.indexWhere((element) =>
         (element.block == item && element.count.value < stackSize));
-    if (index != -1) {
-      _items[index].count.value++;
+
+    if (index != -1 && !split) {
+      _items[index].count.value += count;
       return true;
     } else {
       index = _items.indexWhere((element) => element.block == null);
       if (index != -1) {
         _items[index].block = item;
-        _items[index].count.value++;
+        _items[index].count.value += count;
         return true;
       } else {
         return false;
