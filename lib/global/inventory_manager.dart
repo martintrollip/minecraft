@@ -38,7 +38,7 @@ class InventoryManager {
     }
   }
 
-  void toggleInventory() {
+  void toggle() {
     isOpen.value = !isOpen.value;
   }
 }

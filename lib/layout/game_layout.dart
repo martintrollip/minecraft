@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/layout/controller_widget.dart';
 import 'package:minecraft/main_game.dart';
+import 'package:minecraft/widgets/crafting/crafting_inventory.dart';
+import 'package:minecraft/widgets/crafting/standard_crafting.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_type.dart';
 import 'package:minecraft/widgets/inventory/inventory_storage_widget.dart';
 import 'package:minecraft/widgets/inventory/item_bar.dart';
@@ -24,6 +26,7 @@ class GameLayout extends StatelessWidget {
         const ControllerWidget(),
         const ItemBar(SlotType.itemBar),
         const PlayerInventoryWidget(),
+        const CraftingInventoryWidget()
       ],
     );
   }

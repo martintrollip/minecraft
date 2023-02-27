@@ -6,12 +6,13 @@ import 'package:minecraft/components/item_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/utils/game_methods.dart';
-import 'package:minecraft/widgets/crafting/player_inventory_crafting.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_type.dart';
 import 'package:minecraft/widgets/inventory/item_bar.dart';
 
 class InventoryStorage extends StatelessWidget {
-  const InventoryStorage({super.key});
+  const InventoryStorage(Widget crafting, {super.key}) : _crafting = crafting;
+
+  final Widget _crafting;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class InventoryStorage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const PlayerInventoryCrafting(),
+                    _crafting,
                     const ItemBar(SlotType.inventory, startIndex: 27),
                     const ItemBar(SlotType.inventory, startIndex: 18),
                     const ItemBar(SlotType.inventory, startIndex: 9),

@@ -9,8 +9,7 @@ class InventoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GlobalGameReference.instance.game.worldData.inventoryManager
-            .toggleInventory();
+        GlobalGameReference.instance.game.worldData.inventoryManager.toggle();
       },
       child: SizedBox.square(
         dimension: GameMethods.instance.inventorySlotSize,
