@@ -17,4 +17,8 @@ class CraftingManger {
   void toggle() {
     isOpen.value = !isOpen.value;
   }
+
+  void close() {
+    isOpen.value = false;
+  }
 }

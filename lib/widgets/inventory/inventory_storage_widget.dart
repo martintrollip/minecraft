@@ -51,27 +51,33 @@ class InventoryStorage extends StatelessWidget {
 
   Widget _getDragTarget(Direction direction) {
     return Expanded(
-      child: DragTarget(
-        builder: (_, __, ___) => Container(),
-        onAccept: (InventorySlot data) {
-          final xDelta = (direction == Direction.left ? -1 : 1) * 5 +
-              (Random().nextBool() ? 1 : -1);
-          const yDelta = -3;
-          final position = Vector2(
-            GameMethods.instance.playerIndex.x + xDelta,
-            GameMethods.instance.playerIndex.y + yDelta,
-          );
-
-          GlobalGameReference.instance.game.worldData.items.addAll(
-            List.generate(
-              data.count.value,
-              (_) => ItemComponent(position, data.block!),
-            ),
-          );
-
-          GlobalGameReference.instance.game.worldData.inventoryManager
-              .removeItem(data, count: data.count.value);
+      child: InkWell(
+        onTap: () {
+          GlobalGameReference.instance.game.worldData.inventoryManager.close();
+          GlobalGameReference.instance.game.worldData.craftingManger.close();
         },
+        child: DragTarget(
+          builder: (_, __, ___) => Container(),
+          onAccept: (InventorySlot data) {
+            final xDelta = (direction == Direction.left ? -1 : 1) * 5 +
+                (Random().nextBool() ? 1 : -1);
+            const yDelta = -3;
+            final position = Vector2(
+              GameMethods.instance.playerIndex.x + xDelta,
+              GameMethods.instance.playerIndex.y + yDelta,
+            );
+
+            GlobalGameReference.instance.game.worldData.items.addAll(
+              List.generate(
+                data.count.value,
+                (_) => ItemComponent(position, data.block!),
+              ),
+            );
+
+            GlobalGameReference.instance.game.worldData.inventoryManager
+                .removeItem(data, count: data.count.value);
+          },
+        ),
       ),
     );
   }

@@ -41,6 +41,10 @@ class InventoryManager {
   void toggle() {
     isOpen.value = !isOpen.value;
   }
+
+  void close() {
+    isOpen.value = false;
+  }
 }
 
 class InventorySlot {

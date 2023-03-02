@@ -1,3 +1,7 @@
+import 'package:flame/components.dart';
+import 'package:minecraft/blocks/crafting_table_block.dart';
+import 'package:minecraft/components/block_component.dart';
+
 enum Blocks {
   grass,
   dirt,
@@ -67,6 +71,21 @@ class BlockData {
         return ore;
       case Blocks.bedrock:
         return bedrock;
+    }
+  }
+
+  static BlockComponent getParentForBlock({
+    required Blocks block,
+    required Vector2 index,
+    required int chunkIndex,
+  }) {
+    switch (block) {
+      case Blocks.craftingTable:
+        return CraftingTableBlock(
+            block: block, index: index, chunkIndex: chunkIndex);
+      default:
+        return BlockComponent(
+            block: block, index: index, chunkIndex: chunkIndex);
     }
   }
 

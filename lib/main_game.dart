@@ -37,6 +37,9 @@ class MainGame extends FlameGame
     if (debugMode) {
       add(FpsTextComponent());
     }
+    Future.delayed(const Duration(seconds: 1)).then((_) {
+      worldData.inventoryManager.addItem(Blocks.craftingTable);
+    });
   }
 
   void renderChunk(int chunkIndex) {
@@ -46,7 +49,7 @@ class MainGame extends FlameGame
       row.asMap().forEach((int xIndex, Blocks? block) {
         if (block != null) {
           add(
-            BlockComponent(
+            BlockData.getParentForBlock(
               block: block,
               index: Vector2(xIndex.toDouble() + offset, yIndex.toDouble()),
               chunkIndex: chunkIndex,
@@ -145,7 +148,7 @@ class MainGame extends FlameGame
       final type = worldData.inventoryManager
           .items[worldData.inventoryManager.currentSelection.value];
       if (type.block != null) {
-        final block = BlockComponent(
+        final block = BlockData.getParentForBlock(
           block: type.block!,
           index: blockIndex,
           chunkIndex: chunkIndex,
