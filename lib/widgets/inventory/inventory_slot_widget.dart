@@ -51,6 +51,11 @@ class InventorySlotWidget extends StatelessWidget {
           GlobalGameReference.instance.game.worldData.inventoryManager
               .currentSelection.value = _slot.index;
         }
+        if (_type == SlotType.craftingOutput || _type == SlotType.crafting) {
+          GlobalGameReference.instance.game.worldData.inventoryManager
+              .addItem(_slot.block!, count: _slot.count.value);
+          _slot.emptySlot();
+        }
       },
       child: Obx(() {
         return Stack(
@@ -90,7 +95,7 @@ class InventorySlotWidget extends StatelessWidget {
             ] else ...[
               const SizedBox.shrink()
             ],
-            getDragTarget(),
+            if (_type != SlotType.craftingOutput) getDragTarget(),
           ],
         );
       }),

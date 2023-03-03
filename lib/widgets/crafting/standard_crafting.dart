@@ -44,7 +44,7 @@ class StandardCrafting extends StatelessWidget {
             width: slotSize,
             height: slotSize,
           ),
-          InventorySlotWidget(SlotType.crafting, grid[9]),
+          InventorySlotWidget(SlotType.craftingOutput, grid[9]),
         ],
       ),
     );

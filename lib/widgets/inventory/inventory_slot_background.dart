@@ -20,6 +20,7 @@ class InventorySlotBackground extends StatelessWidget {
   String getPath() {
     switch (_type) {
       case SlotType.crafting:
+      case SlotType.craftingOutput:
       case SlotType.inventory:
         return 'assets/images/inventory/inventory_item_storage_slot.png';
       case SlotType.itemBar:

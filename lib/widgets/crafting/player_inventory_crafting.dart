@@ -37,7 +37,7 @@ class PlayerInventoryCrafting extends StatelessWidget {
             width: slotSize,
             height: slotSize,
           ),
-          InventorySlotWidget(SlotType.crafting, grid[4]),
+          InventorySlotWidget(SlotType.craftingOutput, grid[4]),
         ],
       ),
     );
