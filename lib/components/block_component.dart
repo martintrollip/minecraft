@@ -35,7 +35,7 @@ class BlockComponent extends SpriteComponent with Tappable {
     }
 
     add(RectangleHitbox(size: size - (size * 0.1)));
-    sprite = GameMethods.instance.blockSprite(block);
+    sprite = GameMethods.instance.getSprite(block);
   }
 
   @override

@@ -70,7 +70,7 @@ class InventorySlotWidget extends StatelessWidget {
                   padding: EdgeInsets.all(
                       GameMethods.instance.inventorySlotSize / 4),
                   child: SpriteWidget(
-                      sprite: GameMethods.instance.blockSprite(_slot.block!)),
+                      sprite: GameMethods.instance.getSprite(_slot.block!)),
                 ),
               ),
               //add counter with minecraft font
@@ -146,8 +146,8 @@ class BlocKDrag extends StatelessWidget {
     return Stack(children: [
       Padding(
         padding: EdgeInsets.all(GameMethods.instance.inventorySlotSize / 4),
-        child: SpriteWidget(
-            sprite: GameMethods.instance.blockSprite(_slot.block!)),
+        child:
+            SpriteWidget(sprite: GameMethods.instance.getSprite(_slot.block!)),
       ),
       Positioned(
         bottom: GameMethods.instance.inventorySlotSize / 6,

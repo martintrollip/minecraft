@@ -4,11 +4,11 @@ import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
-import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/resources/blocks.dart';
+import 'package:minecraft/resources/items.dart';
 import 'package:minecraft/utils/chunk_generation_methods.dart';
 import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
@@ -37,8 +37,13 @@ class MainGame extends FlameGame
     if (debugMode) {
       add(FpsTextComponent());
     }
+
+    //Testing
     Future.delayed(const Duration(seconds: 1)).then((_) {
       worldData.inventoryManager.addItem(Blocks.craftingTable);
+      worldData.inventoryManager.addItem(Items.apple);
+      worldData.inventoryManager.addItem(Items.diamond);
+      worldData.inventoryManager.addItem(Items.woodenSword);
     });
   }
 
@@ -147,7 +152,7 @@ class MainGame extends FlameGame
         GameMethods.instance.canPlaceBlock(blockIndex)) {
       final type = worldData.inventoryManager
           .items[worldData.inventoryManager.currentSelection.value];
-      if (type.block != null) {
+      if (type.block != null && type.block is Blocks) {
         final block = BlockData.getParentForBlock(
           block: type.block!,
           index: blockIndex,

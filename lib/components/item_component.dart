@@ -5,15 +5,14 @@ import 'package:flame/components.dart';
 import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
-import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/entity.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class ItemComponent extends Entity {
   final Vector2 spawnBlockIndex;
-  final Blocks block;
+  final dynamic item;
 
-  ItemComponent(this.spawnBlockIndex, this.block);
+  ItemComponent(this.spawnBlockIndex, this.item);
 
   @override
   Future<void> onLoad() async {
@@ -29,7 +28,7 @@ class ItemComponent extends Entity {
       spawnBlockIndex.y * GameMethods.instance.blockSize.y,
     );
     animation = SpriteAnimation.spriteList(
-      [GameMethods.instance.blockSprite(block)],
+      [GameMethods.instance.getSprite(item)],
       stepTime: 1,
     );
   }
@@ -55,7 +54,7 @@ class ItemComponent extends Entity {
       super.onCollision(intersectionPoints, other);
     } else if (other is PlayerComponent) {
       final added = GlobalGameReference.instance.game.worldData.inventoryManager
-          .addItem(block);
+          .addItem(item);
 
       if (added) {
         GlobalGameReference.instance.game.worldData.items.remove(this);

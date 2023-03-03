@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/utils/constant.dart';
 
 class InventoryManager {
@@ -12,7 +11,7 @@ class InventoryManager {
 
   List<InventorySlot> get items => _items;
 
-  bool addItem(Blocks item, {int count = 1, bool split = false}) {
+  bool addItem(dynamic item, {int count = 1, bool split = false}) {
     var index = _items.indexWhere((element) =>
         (element.block == item && element.count.value < stackSize));
 
@@ -50,7 +49,7 @@ class InventoryManager {
 class InventorySlot {
   InventorySlot({required this.index, this.block});
 
-  Blocks? block;
+  dynamic block;
   Rx<int> count = 0.obs;
   bool get isEmpty => count.value == 0;
   final int index;

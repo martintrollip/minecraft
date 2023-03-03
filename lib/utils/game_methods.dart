@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/blocks.dart';
+import 'package:minecraft/resources/items.dart';
 import 'package:minecraft/utils/constant.dart';
 
 enum Direction { left, right, top, bottom }
@@ -65,9 +66,33 @@ class GameMethods {
     );
   }
 
-  Sprite blockSprite(Blocks block) {
+  SpriteSheet itemSpriteSheet() {
+    return SpriteSheet(
+      image: Flame.images.fromCache(
+        'sprite_sheets/item/item_sprite_sheet.png',
+      ),
+      srcSize: Vector2.all(60),
+    );
+  }
+
+  Sprite getSprite(dynamic from) {
+    if (from is Blocks) {
+      return _getBlockSprite(from);
+    } else if (from is Items) {
+      return _getItemSprite(from);
+    } else {
+      throw Exception('Invalid type');
+    }
+  }
+
+  Sprite _getBlockSprite(Blocks block) {
     final sheet = blockSpriteSheet();
     return sheet.getSprite(0, block.index);
+  }
+
+  Sprite _getItemSprite(Items item) {
+    final sheet = itemSpriteSheet();
+    return sheet.getSprite(0, item.index);
   }
 
   void addChunkToWorld(List<List<Blocks?>> chunk, bool isRight) {
