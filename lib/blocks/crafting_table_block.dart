@@ -11,7 +11,6 @@ class CraftingTableBlock extends BlockComponent {
 
   @override
   bool onTapUp(TapUpInfo info) {
-    print('Martin on up!');
     GlobalGameReference.instance.game.worldData.craftingManger.toggle();
     return super.onTapUp(info);
   }

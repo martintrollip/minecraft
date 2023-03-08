@@ -15,7 +15,7 @@ class InventorySlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_type == SlotType.itemBar) {
+    if (_type == SlotType.itemBar || _type == SlotType.craftingOutput) {
       return getChild();
     }
 
@@ -33,7 +33,7 @@ class InventorySlotWidget extends StatelessWidget {
   Widget getChild() {
     return GestureDetector(
       onLongPress: () {
-        if (_type == SlotType.inventory) {
+        if (_type == SlotType.inventory || _type == SlotType.crafting) {
           if (_slot.count.value > 1) {
             int half = (_slot.count.value / 2).floor();
             _slot.count.value -= half;
@@ -51,10 +51,23 @@ class InventorySlotWidget extends StatelessWidget {
           GlobalGameReference.instance.game.worldData.inventoryManager
               .currentSelection.value = _slot.index;
         }
+
+        if (_type == SlotType.craftingOutput) {
+          final standardGrid = GlobalGameReference
+              .instance.game.worldData.craftingManger.standardCraftingGrid;
+
+          GlobalGameReference.instance.game.worldData.craftingManger
+              .decrementCurrentInventory();
+          // and also when dragging out from crafting output
+        }
+
         if (_type == SlotType.craftingOutput || _type == SlotType.crafting) {
           GlobalGameReference.instance.game.worldData.inventoryManager
               .addItem(_slot.block!, count: _slot.count.value);
           _slot.emptySlot();
+
+          GlobalGameReference.instance.game.worldData.craftingManger
+              .checkForRecipe();
         }
       },
       child: Obx(() {
@@ -127,6 +140,10 @@ class InventorySlotWidget extends StatelessWidget {
             }
           }
         }
+
+        // Always check for recipe
+        GlobalGameReference.instance.game.worldData.craftingManger
+            .checkForRecipe();
       },
     );
   }

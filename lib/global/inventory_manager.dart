@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/utils/constant.dart';
 
 class InventoryManager {
@@ -39,6 +40,7 @@ class InventoryManager {
 
   void toggle() {
     isOpen.value = !isOpen.value;
+    GlobalGameReference.instance.game.worldData.craftingManger.checkForRecipe();
   }
 
   void close() {
