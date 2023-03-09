@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:minecraft/global/global_game_reference.dart';
+import 'package:minecraft/resources/items.dart';
 import 'package:minecraft/utils/constant.dart';
 
 class InventoryManager {
@@ -13,6 +14,17 @@ class InventoryManager {
   List<InventorySlot> get items => _items;
 
   bool addItem(dynamic item, {int count = 1, bool split = false}) {
+    if (item is Items && ItemData.from(item: item).tool != Tools.none) {
+      var index = _items.indexWhere((element) => element.block == null);
+      if (index != -1) {
+        _items[index].block = item;
+        _items[index].count.value += count;
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     var index = _items.indexWhere((element) =>
         (element.block == item && element.count.value < stackSize));
 

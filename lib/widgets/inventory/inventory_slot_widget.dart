@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory_manager.dart';
+import 'package:minecraft/resources/items.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_background.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_type.dart';
@@ -127,7 +128,7 @@ class InventorySlotWidget extends StatelessWidget {
           _slot.block = data.block;
           _slot.count.value = data.count.value;
           data.emptySlot();
-        } else if (_slot.block == data.block) {
+        } else if (_slot.block == data.block && ItemData.canStack(data.block)) {
           int freeSpace = _slot.freeSpace();
 
           if (freeSpace > 0) {
