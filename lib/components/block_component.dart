@@ -5,6 +5,7 @@ import 'package:minecraft/components/block_breaking_component.dart';
 import 'package:minecraft/components/item_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/blocks.dart';
+import 'package:minecraft/resources/tools.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class BlockComponent extends SpriteComponent with Tappable {
@@ -24,16 +25,7 @@ class BlockComponent extends SpriteComponent with Tappable {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-
     blockData = BlockData.getFor(block);
-
-    if (blockData.breakable) {
-      breaking = BlockBreakingComponent(
-        baseSpeed: blockData.baseMiningSpeed,
-        onAnimationComplete: onBroken,
-      );
-    }
-
     add(RectangleHitbox(size: size - (size * 0.1)));
     sprite = GameMethods.instance.getSprite(block);
   }
@@ -62,6 +54,13 @@ class BlockComponent extends SpriteComponent with Tappable {
   }
 
   void addBreaking() {
+    if (blockData.breakable) {
+      breaking = BlockBreakingComponent(
+        baseSpeed: getMiningSpeedFor(block),
+        onAnimationComplete: onBroken,
+      );
+    }
+
     if (!breaking.isMounted) {
       add(breaking);
     }

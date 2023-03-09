@@ -44,6 +44,27 @@ class MainGame extends FlameGame
       worldData.inventoryManager.addItem(Items.apple);
       worldData.inventoryManager.addItem(Items.diamond);
       worldData.inventoryManager.addItem(Items.woodenSword);
+      //Add all tools
+      worldData.inventoryManager.addItem(Items.woodenPickaxe);
+      worldData.inventoryManager.addItem(Items.woodenAxe);
+      worldData.inventoryManager.addItem(Items.woodenShovel);
+      worldData.inventoryManager.addItem(Items.stonePickaxe);
+      worldData.inventoryManager.addItem(Items.stoneAxe);
+      worldData.inventoryManager.addItem(Items.stoneShovel);
+      worldData.inventoryManager.addItem(Items.ironPickaxe);
+      worldData.inventoryManager.addItem(Items.ironAxe);
+      worldData.inventoryManager.addItem(Items.ironShovel);
+      worldData.inventoryManager.addItem(Items.diamondPickaxe);
+      worldData.inventoryManager.addItem(Items.diamondAxe);
+      worldData.inventoryManager.addItem(Items.diamondShovel);
+      worldData.inventoryManager.addItem(Items.goldenPickaxe);
+      worldData.inventoryManager.addItem(Items.goldenAxe);
+      worldData.inventoryManager.addItem(Items.goldenShovel);
+      worldData.inventoryManager.addItem(Items.woodenSword);
+      worldData.inventoryManager.addItem(Items.stoneSword);
+      worldData.inventoryManager.addItem(Items.ironSword);
+      worldData.inventoryManager.addItem(Items.diamondSword);
+      worldData.inventoryManager.addItem(Items.goldenSword);
     });
   }
 

@@ -1,6 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:minecraft/blocks/crafting_table_block.dart';
 import 'package:minecraft/components/block_component.dart';
+import 'package:minecraft/resources/items.dart';
 
 enum Blocks {
   grass,
@@ -31,11 +32,13 @@ class BlockData {
   final bool isCollidable;
   final double baseMiningSpeed;
   final bool breakable;
+  final Tools suitableTool;
 
   BlockData({
     required this.isCollidable,
     required this.baseMiningSpeed,
     this.breakable = true,
+    required this.suitableTool,
   });
 
   factory BlockData.getFor(Blocks block) {
@@ -92,46 +95,36 @@ class BlockData {
   static BlockData plants = BlockData(
     isCollidable: false,
     baseMiningSpeed: 0.5,
+    suitableTool: Tools.none,
   );
 
   static BlockData leaf = BlockData(
     isCollidable: false,
     baseMiningSpeed: 0.5,
+    suitableTool: Tools.none,
   );
 
   static BlockData sand = BlockData(
-    isCollidable: true,
-    baseMiningSpeed: 0.5,
-  );
+      isCollidable: true, baseMiningSpeed: 0.5, suitableTool: Tools.shovel);
 
   static BlockData soil = BlockData(
-    isCollidable: true,
-    baseMiningSpeed: 0.75,
-  );
+      isCollidable: true, baseMiningSpeed: 0.75, suitableTool: Tools.shovel);
 
   static BlockData wood = BlockData(
-    isCollidable: false,
-    baseMiningSpeed: 1.25,
-  );
+      isCollidable: false, baseMiningSpeed: 1.25, suitableTool: Tools.axe);
 
   static BlockData woodPlank = BlockData(
-    isCollidable: true,
-    baseMiningSpeed: 1.5,
-  );
+      isCollidable: true, baseMiningSpeed: 1.5, suitableTool: Tools.axe);
 
   static BlockData stone = BlockData(
-    isCollidable: true,
-    baseMiningSpeed: 2,
-  );
+      isCollidable: true, baseMiningSpeed: 2, suitableTool: Tools.pickaxe);
 
   static BlockData ore = BlockData(
-    isCollidable: true,
-    baseMiningSpeed: 2.5,
-  );
+      isCollidable: true, baseMiningSpeed: 2.5, suitableTool: Tools.pickaxe);
 
   static BlockData bedrock = BlockData(
-    isCollidable: true,
-    baseMiningSpeed: 100,
-    breakable: false,
-  );
+      isCollidable: true,
+      baseMiningSpeed: 100,
+      breakable: false,
+      suitableTool: Tools.none);
 }
