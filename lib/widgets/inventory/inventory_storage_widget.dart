@@ -7,7 +7,7 @@ import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_type.dart';
-import 'package:minecraft/widgets/inventory/item_bar.dart';
+import 'package:minecraft/layout/item_bar.dart';
 
 class InventoryStorage extends StatelessWidget {
   const InventoryStorage(Widget crafting, {super.key}) : _crafting = crafting;

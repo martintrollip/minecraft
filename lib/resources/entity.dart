@@ -13,6 +13,10 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
 
   double jumpForce = 0;
 
+  static const minHealth = 0.0;
+  static const maxHealth = 10.0;
+  double health = 10;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -121,6 +125,16 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
   void jump() {
     if (yVelocity <= 0) {
       jumpForce = GameMethods.instance.jumpForce;
+    }
+  }
+
+  void adjustHealth(int delta) {
+    health = (health + delta).clamp(minHealth, maxHealth);
+  }
+
+  void killEntityLogic() {
+    if (health == 0) {
+      removeFromParent();
     }
   }
 }

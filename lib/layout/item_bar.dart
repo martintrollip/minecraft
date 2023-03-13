@@ -5,7 +5,7 @@ import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/inventory/inventory_button.dart';
 import 'package:minecraft/widgets/inventory/inventory_slot_widget.dart';
 
-import 'inventory_slot_type.dart';
+import '../widgets/inventory/inventory_slot_type.dart';
 
 class ItemBar extends StatelessWidget {
   const ItemBar(SlotType type, {int startIndex = 0, super.key})

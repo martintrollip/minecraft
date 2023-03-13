@@ -71,6 +71,7 @@ class PlayerComponent extends Entity {
     );
     gravity(dt);
     jumpLogic();
+    killEntityLogic();
     resetCollision();
 
     if (refreshSpeed) {
