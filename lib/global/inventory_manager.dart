@@ -14,7 +14,6 @@ class InventoryManager {
   List<InventorySlot> get items => _items;
 
   dynamic getSelectedBlock() {
-    print('Martin selected: ${_items[currentSelection.value].block}');
     return _items[currentSelection.value].block;
   }
 

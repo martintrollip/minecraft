@@ -20,7 +20,7 @@ class BlockComponent extends SpriteComponent with Tappable {
   final Vector2 index;
   final int chunkIndex;
 
-  late final BlockBreakingComponent breaking;
+  late BlockBreakingComponent breaking;
 
   @override
   Future<void> onLoad() async {

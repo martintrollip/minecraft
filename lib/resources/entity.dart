@@ -17,6 +17,8 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
   static const maxHealth = 10.0;
   double health = 10;
 
+  double blocksFallen = 0;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -75,13 +77,20 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
   void gravity(double dt, [int modifier = 0]) {
     if (!isCollidingGround) {
       final adjustedGravity = GameMethods.instance.getGravity(dt) - modifier;
-
       if (yVelocity < adjustedGravity * 2) {
         yVelocity += adjustedGravity;
       }
       position.y += yVelocity;
+      blocksFallen += yVelocity / GameMethods.instance.blockSize.y;
     } else {
       yVelocity = 0;
+
+      if (blocksFallen > 3.5) {
+        //deduct health
+        adjustHealth(-(blocksFallen * 0.5));
+        print('health: $health');
+      }
+      blocksFallen = 0;
     }
   }
 
@@ -128,7 +137,7 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
     }
   }
 
-  void adjustHealth(int delta) {
+  void adjustHealth(double delta) {
     health = (health + delta).clamp(minHealth, maxHealth);
   }
 
