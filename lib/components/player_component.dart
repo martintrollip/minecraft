@@ -58,6 +58,14 @@ class PlayerComponent extends Entity {
         refreshSpeed = true;
       },
     ));
+
+    add(TimerComponent(
+      period: 20,
+      repeat: true,
+      onTick: () {
+        healthAndHungerLogic();
+      },
+    ));
   }
 
   @override
@@ -79,11 +87,7 @@ class PlayerComponent extends Entity {
       refreshSpeed = false;
     }
 
-    final playerHealth =
-        GlobalGameReference.instance.game.worldData.playerData.playerHealth;
-    if (playerHealth.value != health) {
-      playerHealth.value = health;
-    }
+    syncHealth();
   }
 
   void movement(ComponentMotionState motionState, double dt, double speed) {
@@ -118,5 +122,30 @@ class PlayerComponent extends Entity {
   void onGameResize(Vector2 size) {
     super.onGameResize(size);
     this.size = GameMethods.instance.blockSize * 1.5;
+  }
+
+  void syncHealth() {
+    final playerHealth =
+        GlobalGameReference.instance.game.worldData.playerData.playerHealth;
+    if (playerHealth.value != health) {
+      playerHealth.value = health;
+    }
+  }
+
+  void healthAndHungerLogic() {
+    final playerHunger =
+        GlobalGameReference.instance.game.worldData.playerData.playerHunger;
+
+    // Regenerate Health
+    if (playerHunger.value > 9) {
+      adjustHealth(1);
+    }
+
+    // Get Hungry
+    if (playerHunger.value > 0) {
+      playerHunger.value = (playerHunger.value - 0.5).clamp(0, 10);
+    } else {
+      adjustHealth(-1);
+    }
   }
 }
