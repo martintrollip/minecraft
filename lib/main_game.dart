@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:minecraft/components/player_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
+import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/global/world_data.dart';
 import 'package:minecraft/resources/blocks.dart';
+import 'package:minecraft/resources/food.dart';
 import 'package:minecraft/resources/items.dart';
 import 'package:minecraft/utils/chunk_generation_methods.dart';
 import 'package:minecraft/utils/constant.dart';
@@ -161,18 +163,24 @@ class MainGame extends FlameGame
   @override
   void onTapDown(int pointerId, TapDownInfo info) {
     super.onTapDown(pointerId, info);
-    _placeBlock(info.eventPosition.game);
+
+    final selectedItem = worldData.inventoryManager
+        .items[worldData.inventoryManager.currentSelection.value];
+
+    _placeBlock(info.eventPosition.game, selectedItem);
+    if (_canEat(selectedItem)) {
+      playerComponent.adjustHunger(foodPoints[selectedItem.block] ?? 0);
+      worldData.inventoryManager.removeItem(selectedItem);
+    }
   }
 
-  void _placeBlock(Vector2 pixels) {
+  void _placeBlock(Vector2 pixels, InventorySlot type) {
     final blockIndex = GameMethods.instance.getBlockIndexFrom(pixels);
     final chunkIndex = GameMethods.instance.getChunkIndexFrom(blockIndex);
 
     if (blockIndex.y > 0 &&
         blockIndex.y < chunkHeight &&
         GameMethods.instance.canPlaceBlock(blockIndex)) {
-      final type = worldData.inventoryManager
-          .items[worldData.inventoryManager.currentSelection.value];
       if (type.block != null && type.block is Blocks) {
         final block = BlockData.getParentForBlock(
           block: type.block!,
@@ -186,5 +194,11 @@ class MainGame extends FlameGame
         worldData.inventoryManager.removeItem(type);
       }
     }
+  }
+
+  bool _canEat(InventorySlot selectedItem) {
+    return selectedItem.block != null &&
+        selectedItem.block is Items &&
+        ItemData.from(item: selectedItem.block).isFood;
   }
 }

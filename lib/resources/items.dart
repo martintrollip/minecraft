@@ -38,9 +38,10 @@ enum Items {
 }
 
 class ItemData {
-  const ItemData({this.tool = Tools.none});
+  const ItemData({this.tool = Tools.none, this.isFood = false});
 
   final Tools tool;
+  final bool isFood;
 
   static bool canStack(dynamic item) {
     if (item is Blocks) {
@@ -86,6 +87,8 @@ class ItemData {
       case Items.diamondAxe:
       case Items.goldenAxe:
         return const ItemData(tool: Tools.axe);
+      case Items.apple:
+        return const ItemData(isFood: true);
       default:
         return const ItemData();
     }

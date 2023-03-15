@@ -25,6 +25,9 @@ class PlayerComponent extends Entity {
   late SpriteAnimation idleAnimation =
       idleSheet.createAnimation(row: 0, stepTime: stepTime);
 
+  static const minHunger = 0.0;
+  static const maxHunger = 10.0;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
@@ -143,9 +146,17 @@ class PlayerComponent extends Entity {
 
     // Get Hungry
     if (playerHunger.value > 0) {
-      playerHunger.value = (playerHunger.value - 0.5).clamp(0, 10);
+      adjustHunger(-0.5);
     } else {
       adjustHealth(-1);
     }
+  }
+
+  void adjustHunger(double delta) {
+    final playerHunger =
+        GlobalGameReference.instance.game.worldData.playerData.playerHunger;
+
+    playerHunger.value =
+        (playerHunger.value + delta).clamp(minHunger, maxHunger);
   }
 }
