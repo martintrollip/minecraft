@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class PlayerHealthBar extends StatelessWidget {
@@ -6,19 +8,21 @@ class PlayerHealthBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hearts = <Widget>[];
-    final health = 5;
+    return Obx(() {
+      final hearts = <Widget>[];
+      final health = GlobalGameReference
+          .instance.game.worldData.playerData.playerHealth.value;
 
-    for (int i = 0; i < 10; i++) {
-      hearts.add(getHeartWidget(i < health));
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Row(
-        children: hearts,
-      ),
-    );
+      for (int i = 0; i < 10; i++) {
+        hearts.add(getHeartWidget(i < health));
+      }
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: Row(
+          children: hearts,
+        ),
+      );
+    });
   }
 
   Widget getHeartWidget(bool full) {

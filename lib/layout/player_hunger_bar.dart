@@ -1,29 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:get/state_manager.dart';
 import 'package:minecraft/utils/game_methods.dart';
+
+import '../global/global_game_reference.dart';
 
 class PlayerHungerBar extends StatelessWidget {
   const PlayerHungerBar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final hungers = <Widget>[];
-    final hunger = 5;
+    return Obx(() {
+      final hungers = <Widget>[];
+      final hunger = GlobalGameReference
+          .instance.game.worldData.playerData.playerHunger.value;
 
-    for (int i = 0; i < 10; i++) {
-      hungers.add(getHungerWidget(i < hunger));
-    }
+      for (int i = 0; i < 10; i++) {
+        hungers.add(getHungerWidget(i < hunger));
+      }
 
-    final height = GameMethods.instance.screenSize().width / 32;
-    const padding = 24.0;
-    return Positioned(
-      top: height + padding / 2,
-      child: Padding(
-        padding: const EdgeInsets.all(padding),
-        child: Row(
-          children: hungers,
+      final height = GameMethods.instance.screenSize().width / 32;
+      const padding = 24.0;
+      return Positioned(
+        top: height + padding / 2,
+        child: Padding(
+          padding: const EdgeInsets.all(padding),
+          child: Row(
+            children: hungers,
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget getHungerWidget(bool full) {

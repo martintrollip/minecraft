@@ -88,7 +88,6 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
       if (blocksFallen > 3.5) {
         //deduct health
         adjustHealth(-(blocksFallen * 0.5));
-        print('health: $health');
       }
       blocksFallen = 0;
     }

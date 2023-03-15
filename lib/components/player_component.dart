@@ -78,6 +78,12 @@ class PlayerComponent extends Entity {
       localPlayerSpeed = GameMethods.instance.getSpeed(dt);
       refreshSpeed = false;
     }
+
+    final playerHealth =
+        GlobalGameReference.instance.game.worldData.playerData.playerHealth;
+    if (playerHealth.value != health) {
+      playerHealth.value = health;
+    }
   }
 
   void movement(ComponentMotionState motionState, double dt, double speed) {
