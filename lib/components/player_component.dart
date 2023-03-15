@@ -2,6 +2,7 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/resources/entity.dart';
@@ -27,6 +28,10 @@ class PlayerComponent extends Entity {
 
   static const minHunger = 0.0;
   static const maxHunger = 10.0;
+
+  Rx<double> getHunger() {
+    return GlobalGameReference.instance.game.worldData.playerData.playerHunger;
+  }
 
   @override
   Future<void> onLoad() async {
@@ -63,7 +68,7 @@ class PlayerComponent extends Entity {
     ));
 
     add(TimerComponent(
-      period: 20,
+      period: 1,
       repeat: true,
       onTick: () {
         healthAndHungerLogic();
@@ -86,7 +91,12 @@ class PlayerComponent extends Entity {
     resetCollision();
 
     if (refreshSpeed) {
-      localPlayerSpeed = GameMethods.instance.getSpeed(dt);
+      final baseSpeed = GameMethods.instance.getSpeed(dt);
+      if (getHunger().value < 3) {
+        localPlayerSpeed = baseSpeed / 2;
+      } else {
+        localPlayerSpeed = baseSpeed;
+      }
       refreshSpeed = false;
     }
 
@@ -136,8 +146,7 @@ class PlayerComponent extends Entity {
   }
 
   void healthAndHungerLogic() {
-    final playerHunger =
-        GlobalGameReference.instance.game.worldData.playerData.playerHunger;
+    final playerHunger = getHunger();
 
     // Regenerate Health
     if (playerHunger.value > 9) {
@@ -153,10 +162,10 @@ class PlayerComponent extends Entity {
   }
 
   void adjustHunger(double delta) {
-    final playerHunger =
-        GlobalGameReference.instance.game.worldData.playerData.playerHunger;
-
-    playerHunger.value =
-        (playerHunger.value + delta).clamp(minHunger, maxHunger);
+    final playerHunger = getHunger();
+    playerHunger.value = (playerHunger.value + delta).clamp(
+      minHunger,
+      maxHunger,
+    );
   }
 }
