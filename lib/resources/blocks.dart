@@ -1,5 +1,8 @@
 import 'package:flame/components.dart';
+import 'package:minecraft/blocks/birch_leaf_block.dart';
 import 'package:minecraft/blocks/crafting_table_block.dart';
+import 'package:minecraft/blocks/ore_block.dart';
+import 'package:minecraft/blocks/stone_block.dart';
 import 'package:minecraft/components/block_component.dart';
 import 'package:minecraft/resources/items.dart';
 
@@ -86,6 +89,15 @@ class BlockData {
       case Blocks.craftingTable:
         return CraftingTableBlock(
             block: block, index: index, chunkIndex: chunkIndex);
+      case Blocks.birchLeaf:
+        return BirchLeafBlock(index: index, chunkIndex: chunkIndex);
+      case Blocks.stone:
+        return StoneBlock(index: index, chunkIndex: chunkIndex);
+      case Blocks.coalOre:
+      case Blocks.ironOre:
+      case Blocks.diamondOre:
+      case Blocks.goldOre:
+        return OreBlock(block: block, index: index, chunkIndex: chunkIndex);
       default:
         return BlockComponent(
             block: block, index: index, chunkIndex: chunkIndex);

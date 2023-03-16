@@ -46,6 +46,10 @@ class MainGame extends FlameGame
       worldData.inventoryManager.addItem(Items.apple);
       worldData.inventoryManager.addItem(Items.diamond);
       worldData.inventoryManager.addItem(Items.woodenSword);
+      worldData.inventoryManager.addItem(Blocks.coalOre);
+      worldData.inventoryManager.addItem(Blocks.goldOre);
+      worldData.inventoryManager.addItem(Blocks.ironOre);
+      worldData.inventoryManager.addItem(Blocks.diamondOre);
       //Add all tools
       worldData.inventoryManager.addItem(Items.woodenPickaxe);
       worldData.inventoryManager.addItem(Items.woodenAxe);

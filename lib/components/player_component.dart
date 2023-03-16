@@ -68,7 +68,7 @@ class PlayerComponent extends Entity {
     ));
 
     add(TimerComponent(
-      period: 1,
+      period: 25,
       repeat: true,
       onTick: () {
         healthAndHungerLogic();

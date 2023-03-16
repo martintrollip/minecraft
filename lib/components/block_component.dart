@@ -13,9 +13,11 @@ class BlockComponent extends SpriteComponent with Tappable {
     required this.block,
     required this.index,
     required this.chunkIndex,
+    this.itemDropped,
   });
 
   final Blocks block;
+  dynamic itemDropped;
   late final BlockData blockData;
   final Vector2 index;
   final int chunkIndex;
@@ -69,7 +71,7 @@ class BlockComponent extends SpriteComponent with Tappable {
   void onBroken() {
     GameMethods.instance.replaceBlock(null, index);
     GlobalGameReference.instance.game.worldData.items
-        .add(ItemComponent(index, block));
+        .add(ItemComponent(index, itemDropped ?? block));
     removeFromParent();
   }
 
