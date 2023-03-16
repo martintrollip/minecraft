@@ -1,10 +1,12 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:minecraft/components/player_component.dart';
+import 'package:minecraft/components/sky_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/global/world_data.dart';
@@ -35,6 +37,8 @@ class MainGame extends FlameGame
     camera.followComponent(playerComponent);
 
     add(playerComponent);
+
+    add(SkyComponent());
 
     if (debugMode) {
       add(FpsTextComponent());
