@@ -1,5 +1,7 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:minecraft/global/global_game_reference.dart';
+import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class Entity extends SpriteAnimationComponent with CollisionCallbacks {
@@ -100,30 +102,28 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
     isCollidingRight = false;
   }
 
-  void moveLeft(double speed) {
+  bool moveLeft(double speed) {
     if (!isCollidingLeft) {
       position.x -= speed;
       if (isFacingRight) {
         flipHorizontallyAroundCenter();
         isFacingRight = false;
       }
-    } else {
-      // GlobalGameReference.instance.game.worldData.playerData
-      //     .componentMotionState = ComponentMotionState.idle;
+      return true;
     }
+    return false;
   }
 
-  void moveRight(double speed) {
+  bool moveRight(double speed) {
     if (!isCollidingRight) {
       position.x += speed;
       if (!isFacingRight) {
         flipHorizontallyAroundCenter();
         isFacingRight = true;
       }
-    } else {
-      // GlobalGameReference.instance.game.worldData.playerData
-      //     .componentMotionState = ComponentMotionState.idle;
+      return true;
     }
+    return false;
   }
 
   void stand() {

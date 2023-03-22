@@ -104,23 +104,34 @@ class PlayerComponent extends Entity {
   }
 
   void movement(ComponentMotionState motionState, double dt, double speed) {
+    late bool moved;
     switch (motionState) {
       case ComponentMotionState.walkingLeft:
-        moveLeft(speed);
-        animation = walkingAnimation;
+        moved = moveLeft(speed);
+        animation = moved ? walkingAnimation : idleAnimation;
         break;
       case ComponentMotionState.walkingRight:
-        moveRight(speed);
-        animation = walkingAnimation;
+        moved = moveRight(speed);
+        animation = moved ? walkingAnimation : idleAnimation;
         break;
       case ComponentMotionState.idle:
+        moved = false;
         stand();
         animation = idleAnimation;
         break;
       case ComponentMotionState.jumping:
+        moved = false;
         jump();
         animation = idleAnimation;
         break;
+    }
+
+    print('$moved $motionState');
+    final sky = GlobalGameReference.instance.game.skyComponent;
+    if (moved) {
+      sky.setMotionState(motionState);
+    } else {
+      sky.setMotionState(ComponentMotionState.idle);
     }
   }
 

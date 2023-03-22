@@ -1,7 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flame/parallax.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
@@ -25,8 +24,9 @@ class MainGame extends FlameGame
   }
 
   GlobalGameReference globalGameReference = Get.put(GlobalGameReference());
-  PlayerComponent playerComponent =
-      PlayerComponent(); //Get.put(PlayerComponent());
+  PlayerComponent playerComponent = PlayerComponent();
+
+  SkyComponent skyComponent = SkyComponent();
 
   final WorldData worldData;
 
@@ -37,8 +37,7 @@ class MainGame extends FlameGame
     camera.followComponent(playerComponent);
 
     add(playerComponent);
-
-    add(SkyComponent());
+    add(skyComponent);
 
     if (debugMode) {
       add(FpsTextComponent());
