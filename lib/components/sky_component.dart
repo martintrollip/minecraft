@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
+import 'package:minecraft/resources/sky_timer.dart';
 
 class SkyComponent extends ParallaxComponent {
   SkyComponent();
@@ -12,9 +13,24 @@ class SkyComponent extends ParallaxComponent {
     _state = state;
   }
 
+  void setTime(SkyTime time) async {
+    switch (time) {
+      case SkyTime.morning:
+        parallax = await morning;
+        break;
+      case SkyTime.evening:
+        parallax = await evening;
+        break;
+      case SkyTime.night:
+        parallax = await night;
+        break;
+    }
+  }
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    add(GlobalGameReference.instance.game.worldData.skyTimer);
     parallax = await morning;
   }
 

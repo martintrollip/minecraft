@@ -126,7 +126,6 @@ class PlayerComponent extends Entity {
         break;
     }
 
-    print('$moved $motionState');
     final sky = GlobalGameReference.instance.game.skyComponent;
     if (moved) {
       sky.setMotionState(motionState);
