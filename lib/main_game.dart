@@ -9,6 +9,7 @@ import 'package:minecraft/components/sky_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/global/world_data.dart';
+import 'package:minecraft/mobs/zombie.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/food.dart';
 import 'package:minecraft/resources/items.dart';
@@ -38,6 +39,7 @@ class MainGame extends FlameGame
 
     add(playerComponent);
     add(skyComponent);
+    add(Zombie());
 
     if (debugMode) {
       add(FpsTextComponent());

@@ -1,6 +1,5 @@
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
@@ -21,9 +20,14 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
 
   double blocksFallen = 0;
 
+  bool isHurt = false;
+
   @override
   Future<void> onLoad() async {
     super.onLoad();
+    add(
+      TimerComponent(period: 0.5, repeat: true, onTick: () => isHurt = false),
+    );
   }
 
   @override
@@ -88,7 +92,6 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
       yVelocity = 0;
 
       if (blocksFallen > 3.5) {
-        //deduct health
         adjustHealth(-(blocksFallen * 0.5));
       }
       blocksFallen = 0;
@@ -132,12 +135,27 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
 
   void jump() {
     if (yVelocity <= 0) {
-      jumpForce = GameMethods.instance.jumpForce;
+      jumpForce = GameMethods.instance.jumpForce * 0.5;
     }
   }
 
   void adjustHealth(double delta) {
+    if (delta.isNegative) {
+      isHurt = true;
+    }
+
     health = (health + delta).clamp(minHealth, maxHealth);
+  }
+
+  void takeDamage(ComponentMotionState direction, double damage) {
+    final speed = GameMethods.instance.getSpeed(0.5) / 3;
+    if (direction == ComponentMotionState.walkingRight) {
+      moveRight(speed);
+    } else {
+      moveLeft(speed);
+    }
+
+    adjustHealth(-damage);
   }
 
   void killEntityLogic() {

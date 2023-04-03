@@ -23,8 +23,14 @@ class PlayerComponent extends Entity {
   late SpriteAnimation walkingAnimation =
       walkingSheet.createAnimation(row: 0, stepTime: stepTime / 2);
 
+  late SpriteAnimation walkingHurtAnimation =
+      walkingSheet.createAnimation(row: 1, stepTime: stepTime / 2);
+
   late SpriteAnimation idleAnimation =
       idleSheet.createAnimation(row: 0, stepTime: stepTime);
+
+  late SpriteAnimation idleHurtAnimation =
+      idleSheet.createAnimation(row: 1, stepTime: stepTime);
 
   static const minHunger = 0.0;
   static const maxHunger = 10.0;
@@ -108,28 +114,26 @@ class PlayerComponent extends Entity {
     switch (motionState) {
       case ComponentMotionState.walkingLeft:
         moved = moveLeft(speed);
-        animation = moved ? walkingAnimation : idleAnimation;
         break;
       case ComponentMotionState.walkingRight:
         moved = moveRight(speed);
-        animation = moved ? walkingAnimation : idleAnimation;
         break;
       case ComponentMotionState.idle:
         moved = false;
         stand();
-        animation = idleAnimation;
         break;
       case ComponentMotionState.jumping:
         moved = false;
         jump();
-        animation = idleAnimation;
         break;
     }
 
     final sky = GlobalGameReference.instance.game.skyComponent;
     if (moved) {
+      animation = isHurt ? walkingHurtAnimation : walkingAnimation;
       sky.setMotionState(motionState);
     } else {
+      animation = isHurt ? idleHurtAnimation : idleAnimation;
       sky.setMotionState(ComponentMotionState.idle);
     }
   }

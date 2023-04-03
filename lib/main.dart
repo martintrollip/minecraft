@@ -17,5 +17,7 @@ void main(s) async {
 
   await Flame.images.load('sprite_sheets/item/item_sprite_sheet.png');
 
+  await Flame.images.load('sprite_sheets/mobs/sprite_sheet_zombie.png');
+
   runApp(const MaterialApp(home: Scaffold(body: GameLayout())));
 }
