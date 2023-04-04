@@ -134,6 +134,10 @@ class Entity extends SpriteAnimationComponent with CollisionCallbacks {
   }
 
   void jump() {
+    if (!isCollidingGround) {
+      return;
+    }
+
     if (yVelocity <= 0) {
       jumpForce = GameMethods.instance.jumpForce * 0.5;
     }

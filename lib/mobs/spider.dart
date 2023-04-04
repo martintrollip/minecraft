@@ -4,17 +4,17 @@ import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/resources/mob.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-class Zombie extends Mob {
-  Zombie()
+class Spider extends Mob {
+  Spider()
       : super(
-          spriteSheetPath: 'sprite_sheets/mobs/sprite_sheet_zombie.png',
-          spriteSize: Vector2(67, 99),
+          spriteSheetPath: 'sprite_sheets/mobs/sprite_sheet_spider.png',
+          spriteSize: Vector2(131, 60),
         );
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    size = spriteSize * (GameMethods.instance.blockSize.x * 2 / spriteSize.y);
+    size = spriteSize * (GameMethods.instance.blockSize.y / spriteSize.y);
   }
 
   @override
@@ -23,11 +23,28 @@ class Zombie extends Mob {
     gravity(dt);
     jumpLogic();
     killEntityLogic();
-    zombieLogic(dt);
+    spiderLogic(dt);
     resetCollision();
   }
 
-  void zombieLogic(double dt) {
+  @override
+  void jump() {
+    jumpForce = GameMethods.instance.jumpForce * 1;
+  }
+
+  @override
+  void gravity(double dt, [int modifier = 0]) {
+    if (!isCollidingGround) {
+      final adjustedGravity = GameMethods.instance.getGravity(dt) - modifier;
+      if (yVelocity < adjustedGravity * 2) {
+        yVelocity += adjustedGravity;
+      }
+      position.y += yVelocity;
+      blocksFallen += yVelocity / GameMethods.instance.blockSize.y;
+    }
+  }
+
+  void spiderLogic(double dt) {
     final playerComponent = GlobalGameReference.instance.game.playerComponent;
     final speed = GameMethods.instance.getSpeed(dt) / 3;
     final distance = playerComponent.position.distanceTo(position);
@@ -58,6 +75,6 @@ class Zombie extends Mob {
   @override
   void onGameResize(Vector2 newSize) {
     super.onGameResize(newSize);
-    size = spriteSize * (GameMethods.instance.blockSize.x * 2 / spriteSize.y);
+    size = spriteSize * (GameMethods.instance.blockSize.y / spriteSize.y);
   }
 }
