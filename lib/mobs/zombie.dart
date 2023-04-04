@@ -5,7 +5,7 @@ import 'package:minecraft/resources/mob.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class Zombie extends Mob {
-  Zombie()
+  Zombie({required super.spawnIndexPosition})
       : super(
           spriteSheetPath: 'sprite_sheets/mobs/sprite_sheet_zombie.png',
           spriteSize: Vector2(67, 99),

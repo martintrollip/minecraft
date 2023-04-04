@@ -44,7 +44,15 @@ class BlockData {
     required this.suitableTool,
   });
 
-  factory BlockData.getFor(Blocks block) {
+  factory BlockData.getFor(Blocks? block) {
+    if (block == null) {
+      return BlockData(
+        isCollidable: false,
+        baseMiningSpeed: 0,
+        breakable: false,
+        suitableTool: Tools.none,
+      );
+    }
     switch (block) {
       case Blocks.deadBush:
       case Blocks.grassPlant:

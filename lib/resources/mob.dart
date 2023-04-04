@@ -12,10 +12,12 @@ class Mob extends Entity {
   Mob({
     required this.spriteSheetPath,
     required this.spriteSize,
+    required this.spawnIndexPosition,
   });
 
   final String spriteSheetPath;
   final Vector2 spriteSize;
+  final Vector2 spawnIndexPosition;
 
   final double stepTime = 0.2;
   bool isAggravated = false;
@@ -53,7 +55,10 @@ class Mob extends Entity {
     animation = walkingAnimation;
 
     size = GameMethods.instance.blockSize * 1.5;
-    position = Vector2(500, 100);
+    position = Vector2(
+      spawnIndexPosition.x * GameMethods.instance.blockSize.x,
+      spawnIndexPosition.y * GameMethods.instance.blockSize.y,
+    );
 
     add(
       TimerComponent(

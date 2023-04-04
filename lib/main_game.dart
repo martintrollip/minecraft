@@ -40,8 +40,6 @@ class MainGame extends FlameGame
 
     add(playerComponent);
     add(skyComponent);
-    add(Zombie());
-    add(Spider());
 
     if (debugMode) {
       add(FpsTextComponent());
@@ -49,6 +47,16 @@ class MainGame extends FlameGame
 
     //Testing
     Future.delayed(const Duration(seconds: 1)).then((_) {
+      add(Zombie(
+          spawnIndexPosition: GameMethods.instance.getSpawnPositionForMob()));
+      add(Zombie(
+          spawnIndexPosition: GameMethods.instance.getSpawnPositionForMob()));
+      add(Zombie(
+          spawnIndexPosition: GameMethods.instance.getSpawnPositionForMob()));
+      add(Zombie(
+          spawnIndexPosition: GameMethods.instance.getSpawnPositionForMob()));
+      add(Zombie(
+          spawnIndexPosition: GameMethods.instance.getSpawnPositionForMob()));
       worldData.inventoryManager.addItem(Blocks.craftingTable);
       worldData.inventoryManager.addItem(Items.apple);
       worldData.inventoryManager.addItem(Items.diamond);

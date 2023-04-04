@@ -5,7 +5,7 @@ import 'package:minecraft/resources/mob.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class Spider extends Mob {
-  Spider()
+  Spider({required super.spawnIndexPosition})
       : super(
           spriteSheetPath: 'sprite_sheets/mobs/sprite_sheet_spider.png',
           spriteSize: Vector2(131, 60),

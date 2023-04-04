@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:flame/extensions.dart';
 import 'package:flame/flame.dart';
@@ -37,7 +39,7 @@ class GameMethods {
   }
 
   Vector2 get blockSize {
-    // return Vector2.all(20);
+    return Vector2.all(20);
     return Vector2.all(screenSize().width / chunkWidth);
   }
 
@@ -271,5 +273,26 @@ class GameMethods {
     }
 
     return false;
+  }
+
+  static int counter = 0;
+  Vector2 getSpawnPositionForMob() {
+    int currentSeed = seed(playerChunk) + counter++;
+    int index = Random(currentSeed).nextBool()
+        ? GlobalGameReference.instance.game.worldData.chunksToRender.first
+        : GlobalGameReference.instance.game.worldData.chunksToRender.last;
+
+    final chunk = getChunk(index);
+
+    final x = Random(currentSeed).nextInt(chunkWidth);
+    late final int yPos;
+    for (var y = 0; y < chunkHeight; y++) {
+      if (BlockData.getFor(chunk[y][x]).isCollidable) {
+        yPos = y;
+        break;
+      }
+    }
+
+    return Vector2(x.toDouble() + (index * chunkWidth), yPos.toDouble());
   }
 }
