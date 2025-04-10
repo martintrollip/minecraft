@@ -32,7 +32,7 @@ class ChunkGenerationMethods {
     final noiseRange = noise2(
       endIndex,
       1,
-      noiseType: NoiseType.Perlin,
+      noiseType: NoiseType.perlin,
       frequency: 0.05,
       seed: seed,
     );
@@ -148,7 +148,7 @@ class ChunkGenerationMethods {
     var raw = noise2(
       chunkWidth,
       chunkHeight,
-      noiseType: NoiseType.Perlin,
+      noiseType: NoiseType.perlin,
       frequency: 0.1,
       seed: seed,
     );

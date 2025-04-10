@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 import 'package:minecraft/global/inventory_manager.dart';
-import 'package:minecraft/resources/blocks.dart';
-import 'package:minecraft/resources/items.dart';
 import 'package:minecraft/resources/recipes.dart';
 
 class CraftingManger {

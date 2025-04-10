@@ -38,7 +38,7 @@ class ItemComponent extends Entity {
     super.update(dt);
     gravity(dt, 2);
     // Add slight bouncy animation
-    // position.x += sin(position.x * 10) * 2.5;
+    position.x += sin(position.x * 10) * 2.5;
     resetCollision();
   }
 

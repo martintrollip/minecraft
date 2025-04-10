@@ -16,14 +16,20 @@ class BlockBreakingComponent extends SpriteAnimationComponent {
     super.onLoad();
 
     SpriteSheet animationSheet = SpriteSheet(
-        image: Flame.images
-            .fromCache('sprite_sheets/blocks/block_breaking_sprite_sheet.png'),
-        srcSize: spriteSize);
+      image: Flame.images
+          .fromCache('sprite_sheets/blocks/block_breaking_sprite_sheet.png'),
+      srcSize: spriteSize,
+    );
 
     animation = animationSheet.createAnimation(
-        row: 0, stepTime: baseSpeed / 10, loop: false);
+      row: 0,
+      stepTime: baseSpeed / 10,
+      loop: false,
+    );
 
-    animation!.onComplete = onAnimationComplete;
+    animation!.createTicker().onComplete = () {
+      onAnimationComplete();
+    };
 
     size = GameMethods.instance.blockSize;
   }

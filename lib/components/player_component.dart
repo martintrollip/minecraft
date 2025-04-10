@@ -43,6 +43,8 @@ class PlayerComponent extends Entity {
   Future<void> onLoad() async {
     super.onLoad();
 
+    GlobalGameReference.instance.game.camera.follow(this);
+
     add(RectangleHitbox());
 
     priority = 2;
@@ -63,7 +65,7 @@ class PlayerComponent extends Entity {
     animation = idleAnimation;
 
     size = GameMethods.instance.blockSize * 1.5;
-    position = Vector2(0, 100);
+    // position = Vector2(150, -100);
 
     add(TimerComponent(
       period: 1,

@@ -45,7 +45,7 @@ double getMiningSpeedFor(Blocks block) {
   final suitableTool = BlockData.getFor(block).suitableTool;
   final base = BlockData.getFor(block).baseMiningSpeed;
 
-  //TODO mull check maybe
+  //TODO null check maybe
   if (selection is Items &&
       ItemData.from(item: selection).tool == suitableTool) {
     if (woodenTools.contains(selection)) {

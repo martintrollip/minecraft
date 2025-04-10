@@ -3,7 +3,8 @@ import 'package:flame/components.dart';
 import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-class Entity extends SpriteAnimationComponent with CollisionCallbacks {
+class Entity extends SpriteAnimationComponent
+    with HasCollisionDetection, CollisionCallbacks {
   bool isFacingRight = true;
   double yVelocity = 0;
 

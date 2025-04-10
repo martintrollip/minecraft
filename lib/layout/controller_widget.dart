@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:minecraft/global/global_game_reference.dart';
-import 'package:minecraft/global/player_data.dart';
 import 'package:minecraft/utils/game_methods.dart';
 import 'package:minecraft/widgets/controller_button_widget.dart';
 

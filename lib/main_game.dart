@@ -1,4 +1,5 @@
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:minecraft/components/sky_component.dart';
 import 'package:minecraft/global/global_game_reference.dart';
 import 'package:minecraft/global/inventory_manager.dart';
 import 'package:minecraft/global/world_data.dart';
-import 'package:minecraft/mobs/spider.dart';
 import 'package:minecraft/mobs/zombie.dart';
 import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/food.dart';
@@ -19,7 +19,7 @@ import 'package:minecraft/utils/constant.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
 class MainGame extends FlameGame
-    with HasCollisionDetection, HasKeyboardHandlerComponents, HasTappables {
+    with HasCollisionDetection, HasKeyboardHandlerComponents, TapDetector {
   MainGame({required this.worldData, bool debug = false}) {
     globalGameReference.game = this;
     debugMode = debug;
@@ -36,10 +36,10 @@ class MainGame extends FlameGame
   Future<void> onLoad() async {
     super.onLoad();
 
-    camera.followComponent(playerComponent);
-
     add(playerComponent);
     add(skyComponent);
+
+    camera.follow(playerComponent);
 
     if (debugMode) {
       add(FpsTextComponent());
@@ -151,9 +151,7 @@ class MainGame extends FlameGame
 
   @override
   KeyEventResult onKeyEvent(
-    RawKeyEvent event,
-    Set<LogicalKeyboardKey> keysPressed,
-  ) {
+      KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     super.onKeyEvent(event, keysPressed);
 
     if (keysPressed.contains(LogicalKeyboardKey.arrowLeft) ||
@@ -180,13 +178,13 @@ class MainGame extends FlameGame
   }
 
   @override
-  void onTapDown(int pointerId, TapDownInfo info) {
-    super.onTapDown(pointerId, info);
+  void onTapDown(TapDownInfo info) {
+    super.onTapDown(info);
 
     final selectedItem = worldData.inventoryManager
         .items[worldData.inventoryManager.currentSelection.value];
 
-    _placeBlock(info.eventPosition.game, selectedItem);
+    _placeBlock(info.eventPosition.global, selectedItem);
     if (_canEat(selectedItem)) {
       playerComponent.adjustHunger(foodPoints[selectedItem.block] ?? 0);
       worldData.inventoryManager.removeItem(selectedItem);

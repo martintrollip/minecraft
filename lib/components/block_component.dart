@@ -8,7 +8,7 @@ import 'package:minecraft/resources/blocks.dart';
 import 'package:minecraft/resources/tools.dart';
 import 'package:minecraft/utils/game_methods.dart';
 
-class BlockComponent extends SpriteComponent with Tappable {
+class BlockComponent extends SpriteComponent with TapCallbacks {
   BlockComponent({
     required this.block,
     required this.index,
@@ -77,29 +77,26 @@ class BlockComponent extends SpriteComponent with Tappable {
 
   void removeBreaking() {
     if (breaking.isMounted) {
-      breaking.animation!.reset();
+      // TODO //breaking.animation!.reset();
       remove(breaking);
     }
   }
 
   @override
-  bool onTapDown(TapDownInfo info) {
-    super.onTapDown(info);
+  void onTapDown(TapDownEvent event) {
+    super.onTapDown(event);
     addBreaking();
-    return true;
   }
 
   @override
-  bool onTapUp(TapUpInfo info) {
-    super.onTapUp(info);
+  void onTapUp(TapUpEvent event) {
+    super.onTapUp(event);
     removeBreaking();
-    return true;
   }
 
   @override
-  bool onTapCancel() {
-    super.onTapCancel();
+  void onTapCancel(TapCancelEvent event) {
+    super.onTapCancel(event);
     removeBreaking();
-    return true;
   }
 }

@@ -1,16 +1,19 @@
-# minecraft
+# Minecraft
 
-A new Flutter project.
+Welcome to my personal showcase for the Flutter and Flame course. This project is an implementation of a Minecraft-like game, built using Flutter and the Flame engine.
+
+Throughout the course, I learned how to harness Flutter’s capabilities for cross-platform development and explore the power of the Flame game engine. This project runs on Android, iOS, Linux, macOS, Web, and Windows, demonstrating what you can achieve with modern mobile game development techniques.
+
+*WIP: Busy aligning with the latest Flame version*
 
 ## Getting Started
+```sh
+flutter pub get
+flutter run
+```
 
-This project is a starting point for a Flutter application.
+## Screenshots
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Dusk](/docs/dusk.png)
+![Inventory](/docs/inventory.png)
+![Mobile](/docs/mobile.png)
