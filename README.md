@@ -1,6 +1,8 @@
 # Minecraft
 
-Welcome to my personal showcase for the Flutter and Flame course. This project is an implementation of a Minecraft-like game, built using Flutter and the Flame engine.
+This is a showcase for a Udemy Flutter and Flame course which I did. 
+
+This project is an implementation of a Minecraft-like game, built using Flutter and the Flame engine.
 
 Throughout the course, I learned how to harness Flutter’s capabilities for cross-platform development and explore the power of the Flame game engine. This project runs on Android, iOS, Linux, macOS, Web, and Windows, demonstrating what you can achieve with modern mobile game development techniques.
 
